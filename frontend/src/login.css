@@ -1,0 +1,78 @@
+/* BACKGROUND */
+.login-container {
+  background-image: url("./assets/login-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* GLASS CARD */
+.glass-card {
+  width: 380px;
+  padding: 35px;
+  background: rgba(255, 255, 255, 0.20);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  box-shadow: 0 4px 25px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* TITLE */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1e1e1e;
+}
+
+/* INPUT FIELDS */
+.input-group {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #1e1e1e;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: none;
+  border-bottom: 1px solid #444;
+  background: transparent;
+  outline: none;
+  color: #000;
+  font-size: 15px;
+}
+
+/* LOGIN BUTTON */
+.login-btn {
+  width: 100%;
+  padding: 11px;
+  margin-top: 20px;
+  background: #4f8df9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+/* REGISTER TEXT */
+.register-text {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.register-text span {
+  color: #0056ff;
+  cursor: pointer;
+  font-weight: 600;
+}
