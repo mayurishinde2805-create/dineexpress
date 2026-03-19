@@ -1,0 +1,162 @@
+/* ============================================================
+   ADMIN OVERVIEW - Dark Green Theme
+   ============================================================ */
+
+.admin-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Summary Cards */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.summary-card {
+    background: var(--admin-bg-card, rgba(26, 46, 26, 0.8));
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--admin-border, rgba(74, 222, 128, 0.2));
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.5s ease-out backwards;
+    animation-delay: var(--delay);
+}
+
+.summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--card-color);
+}
+
+.card-icon {
+    font-size: 3rem;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-title {
+    font-size: 0.9rem;
+    color: var(--admin-text-secondary, #a8b5a8);
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--card-color);
+    margin: 0;
+}
+
+/* Quick Actions */
+.quick-actions h2,
+.recent-activity h2 {
+    font-size: 1.4rem;
+    color: var(--admin-text-primary, #f5f5dc);
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.action-btn {
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid var(--admin-border, rgba(74, 222, 128, 0.2));
+    color: var(--admin-text-primary, #f5f5dc);
+    padding: 1.2rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.action-btn:hover {
+    background: rgba(74, 222, 128, 0.15);
+    transform: translateY(-2px);
+    border-color: var(--admin-accent-green, #4ade80);
+}
+
+.action-icon {
+    font-size: 1.5rem;
+}
+
+/* Recent Activity */
+.activity-list {
+    background: var(--admin-bg-card, rgba(26, 46, 26, 0.8));
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--admin-border, rgba(74, 222, 128, 0.2));
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--admin-border, rgba(74, 222, 128, 0.1));
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    font-size: 1.5rem;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    font-size: 0.95rem;
+    color: var(--admin-text-primary, #f5f5dc);
+    margin: 0 0 0.3rem 0;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: var(--admin-text-secondary, #a8b5a8);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+}

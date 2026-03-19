@@ -1,29 +1,80 @@
-/* BACKGROUND */
 .login-container {
   background-image: url("./assets/login-bg.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: center 25%;
+  /* Calibration for vertical mobile subjects */
   height: 100vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  background-attachment: scroll;
+  /* Smoother on mobile browsers */
 }
 
-/* GLASS CARD */
+:root {
+  --fluid-h1: clamp(2rem, 5vw, 3rem);
+  --fluid-p: clamp(0.9rem, 2vw, 1.1rem);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  /* Prevent horizontal scroll */
+  overflow-y: auto;
+  /* Ensure vertical scroll */
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* GLASS CARD - Extreme Mobile Optimized */
 .glass-card {
-  width: 380px;
-  padding: 35px;
-  background: rgba(255, 255, 255, 0.20);
-  backdrop-filter: blur(14px);
+  width: min(82%, 360px);
+  /* Tighter width to show more background */
+  padding: clamp(18px, 4vw, 30px);
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 20px;
-  box-shadow: 0 4px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   text-align: center;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  /* High definition border */
+  animation: fadeInQuick 0.6s ease-out;
+}
+
+@keyframes fadeInQuick {
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@media (max-width: 400px) {
+  .glass-card {
+    padding: 15px;
+    border-radius: 12px;
+  }
 }
 
 /* TITLE */
 .title {
-  font-size: 28px;
+  font-size: clamp(22px, 5vw, 28px);
   font-weight: 700;
   margin-bottom: 30px;
   color: #1e1e1e;

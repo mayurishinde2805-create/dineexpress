@@ -1,0 +1,695 @@
+[
+  {
+    "name": "Veg Spring Rolls",
+    "category": "Starters",
+    "sub_category": "Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1534422298391-e4f8c170db0a?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/veg-spring-rolls.glb"
+  },
+  {
+    "name": "Paneer Tikka",
+    "category": "Starters",
+    "sub_category": "Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1567184109171-969974513936?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/paneer-tikka.glb"
+  },
+  {
+    "name": "Veg Manchurian",
+    "category": "Starters",
+    "sub_category": "Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1512058560366-cd24270086cd?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/veg-manchurian.glb"
+  },
+  {
+    "name": "Crispy Corn",
+    "category": "Starters",
+    "sub_category": "Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/crispy-corn.glb"
+  },
+  {
+    "name": "Hara Bhara Kebab",
+    "category": "Starters",
+    "sub_category": "Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/hara-bhara-kebab.glb"
+  },
+  {
+    "name": "Cheese Balls",
+    "category": "Starters",
+    "sub_category": "Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/cheese-balls.glb"
+  },
+  {
+    "name": "Chicken Tikka",
+    "category": "Starters",
+    "sub_category": "Non-Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-tikka.glb"
+  },
+  {
+    "name": "Chicken 65",
+    "category": "Starters",
+    "sub_category": "Non-Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-65.glb"
+  },
+  {
+    "name": "Chicken Lollipop",
+    "category": "Starters",
+    "sub_category": "Non-Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-lollipop.glb"
+  },
+  {
+    "name": "Fish Fingers",
+    "category": "Starters",
+    "sub_category": "Non-Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/fish-fingers.glb"
+  },
+  {
+    "name": "Prawns Fry",
+    "category": "Starters",
+    "sub_category": "Non-Veg Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/prawns-fry.glb"
+  },
+  {
+    "name": "Paneer Pakoda",
+    "category": "Starters",
+    "sub_category": "Indian Starters",
+    "image_url": "https://images.unsplash.com/photo-1567184109171-969974513936?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/paneer-pakoda.glb"
+  },
+  {
+    "name": "Aloo Tikki",
+    "category": "Starters",
+    "sub_category": "Indian Starters",
+    "image_url": "https://images.unsplash.com/photo-1590165482129-1b8b27698780?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/aloo-tikki.glb"
+  },
+  {
+    "name": "Onion Bhaji",
+    "category": "Starters",
+    "sub_category": "Indian Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/onion-bhaji.glb"
+  },
+  {
+    "name": "Samosa",
+    "category": "Starters",
+    "sub_category": "Indian Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/samosa.glb"
+  },
+  {
+    "name": "Dahi Kebab",
+    "category": "Starters",
+    "sub_category": "Indian Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/dahi-kebab.glb"
+  },
+  {
+    "name": "Chilli Paneer",
+    "category": "Starters",
+    "sub_category": "Chinese Starters",
+    "image_url": "https://images.unsplash.com/photo-1567184109171-969974513936?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chilli-paneer.glb"
+  },
+  {
+    "name": "Chilli Chicken",
+    "category": "Starters",
+    "sub_category": "Chinese Starters",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chilli-chicken.glb"
+  },
+  {
+    "name": "Crispy Baby Corn",
+    "category": "Starters",
+    "sub_category": "Chinese Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/crispy-baby-corn.glb"
+  },
+  {
+    "name": "Chicken Spring Roll",
+    "category": "Starters",
+    "sub_category": "Chinese Starters",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-spring-roll.glb"
+  },
+  {
+    "name": "Malai Paneer Tikka",
+    "category": "Starters",
+    "sub_category": "Tandoor Starters",
+    "image_url": "https://images.unsplash.com/photo-1567184109171-969974513936?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/malai-paneer-tikka.glb"
+  },
+  {
+    "name": "Chicken Tandoori",
+    "category": "Starters",
+    "sub_category": "Tandoor Starters",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-tandoori.glb"
+  },
+  {
+    "name": "Chicken Malai Tikka",
+    "category": "Starters",
+    "sub_category": "Tandoor Starters",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-malai-tikka.glb"
+  },
+  {
+    "name": "Seekh Kebab",
+    "category": "Starters",
+    "sub_category": "Tandoor Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/seekh-kebab.glb"
+  },
+  {
+    "name": "Garlic Bread",
+    "category": "Starters",
+    "sub_category": "Continental Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/garlic-bread.glb"
+  },
+  {
+    "name": "Cheese Garlic Bread",
+    "category": "Starters",
+    "sub_category": "Continental Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/cheese-garlic-bread.glb"
+  },
+  {
+    "name": "French Fries",
+    "category": "Starters",
+    "sub_category": "Continental Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/french-fries.glb"
+  },
+  {
+    "name": "Potato Wedges",
+    "category": "Starters",
+    "sub_category": "Continental Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/potato-wedges.glb"
+  },
+  {
+    "name": "Nachos with Cheese",
+    "category": "Starters",
+    "sub_category": "Continental Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/nachos-with-cheese.glb"
+  },
+  {
+    "name": "Mixed Starter Platter",
+    "category": "Starters",
+    "sub_category": "Chef's Special Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/mixed-starter-platter.glb"
+  },
+  {
+    "name": "Non-Veg Starter Combo",
+    "category": "Starters",
+    "sub_category": "Chef's Special Starters",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/non-veg-starter-combo.glb"
+  },
+  {
+    "name": "Paneer Butter Masala",
+    "category": "Main Menu",
+    "sub_category": "Indian",
+    "image_url": "https://images.unsplash.com/photo-1567184109171-969974513936?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/paneer-butter-masala.glb"
+  },
+  {
+    "name": "Dal Makhani",
+    "category": "Main Menu",
+    "sub_category": "Indian",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/dal-makhani.glb"
+  },
+  {
+    "name": "Chicken Biryani",
+    "category": "Main Menu",
+    "sub_category": "Indian",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-biryani.glb"
+  },
+  {
+    "name": "Mutton Rogan Josh",
+    "category": "Main Menu",
+    "sub_category": "Indian",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/mutton-rogan-josh.glb"
+  },
+  {
+    "name": "Butter Chicken",
+    "category": "Main Menu",
+    "sub_category": "North Indian",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/butter-chicken.glb"
+  },
+  {
+    "name": "Palak Paneer",
+    "category": "Main Menu",
+    "sub_category": "North Indian",
+    "image_url": "https://images.unsplash.com/photo-1567184109171-969974513936?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/palak-paneer.glb"
+  },
+  {
+    "name": "Chole Bhature",
+    "category": "Main Menu",
+    "sub_category": "North Indian",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chole-bhature.glb"
+  },
+  {
+    "name": "Veg Hakka Noodles",
+    "category": "Main Menu",
+    "sub_category": "Chinese",
+    "image_url": "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/veg-hakka-noodles.glb"
+  },
+  {
+    "name": "Chicken Manchurian (Gravy)",
+    "category": "Main Menu",
+    "sub_category": "Chinese",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-manchurian-gravy.glb"
+  },
+  {
+    "name": "Schezwan Fried Rice",
+    "category": "Main Menu",
+    "sub_category": "Chinese",
+    "image_url": "https://images.unsplash.com/photo-1512058560366-cd24270086cd?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/schezwan-fried-rice.glb"
+  },
+  {
+    "name": "Veg Tacos",
+    "category": "Main Menu",
+    "sub_category": "Mexican",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/veg-tacos.glb"
+  },
+  {
+    "name": "Chicken Burrito",
+    "category": "Main Menu",
+    "sub_category": "Mexican",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-burrito.glb"
+  },
+  {
+    "name": "Chicken Shawarma Plate",
+    "category": "Main Menu",
+    "sub_category": "Arabic",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-shawarma-plate.glb"
+  },
+  {
+    "name": "Falafel Wrap",
+    "category": "Main Menu",
+    "sub_category": "Arabic",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/falafel-wrap.glb"
+  },
+  {
+    "name": "Grilled Herb Chicken",
+    "category": "Continental",
+    "sub_category": "Main Course",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/grilled-herb-chicken.glb"
+  },
+  {
+    "name": "Fish and Chips",
+    "category": "Continental",
+    "sub_category": "Main Course",
+    "image_url": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/fish-and-chips.glb"
+  },
+  {
+    "name": "Veg Alfredo Pasta",
+    "category": "Continental",
+    "sub_category": "Pasta & Rice",
+    "image_url": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/veg-alfredo-pasta.glb"
+  },
+  {
+    "name": "Chicken Carbonara",
+    "category": "Continental",
+    "sub_category": "Pasta & Rice",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chicken-carbonara.glb"
+  },
+  {
+    "name": "Mushroom Risotto",
+    "category": "Continental",
+    "sub_category": "Pasta & Rice",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/mushroom-risotto.glb"
+  },
+  {
+    "name": "Paneer Tikka Pizza",
+    "category": "Fusion",
+    "sub_category": "Indian Fusion",
+    "image_url": "https://images.unsplash.com/photo-1567184109171-969974513936?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/paneer-tikka-pizza.glb"
+  },
+  {
+    "name": "Butter Chicken Pizza",
+    "category": "Fusion",
+    "sub_category": "Indian Fusion",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/butter-chicken-pizza.glb"
+  },
+  {
+    "name": "Thai Green Curry Pasta",
+    "category": "Fusion",
+    "sub_category": "Asian Fusion",
+    "image_url": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/thai-green-curry-pasta.glb"
+  },
+  {
+    "name": "Schezwan Burger",
+    "category": "Fusion",
+    "sub_category": "Asian Fusion",
+    "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/schezwan-burger.glb"
+  },
+  {
+    "name": "Tandoori Chicken Quesadilla",
+    "category": "Fusion",
+    "sub_category": "Western Fusion",
+    "image_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/tandoori-chicken-quesadilla.glb"
+  },
+  {
+    "name": "Chocolate Cake",
+    "category": "Desserts",
+    "sub_category": "Cakes",
+    "image_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chocolate-cake.glb"
+  },
+  {
+    "name": "Black Forest",
+    "category": "Desserts",
+    "sub_category": "Cakes",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/black-forest.glb"
+  },
+  {
+    "name": "Red Velvet",
+    "category": "Desserts",
+    "sub_category": "Cakes",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/red-velvet.glb"
+  },
+  {
+    "name": "Chocolate Brownie",
+    "category": "Desserts",
+    "sub_category": "Brownies",
+    "image_url": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chocolate-brownie.glb"
+  },
+  {
+    "name": "Walnut Brownie",
+    "category": "Desserts",
+    "sub_category": "Brownies",
+    "image_url": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/walnut-brownie.glb"
+  },
+  {
+    "name": "Vanilla Ice Cream",
+    "category": "Desserts",
+    "sub_category": "Ice Cream",
+    "image_url": "https://images.unsplash.com/photo-1501443762994-82bd5dabb892?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/vanilla-ice-cream.glb"
+  },
+  {
+    "name": "Chocolate Ice Cream",
+    "category": "Desserts",
+    "sub_category": "Ice Cream",
+    "image_url": "https://images.unsplash.com/photo-1501443762994-82bd5dabb892?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chocolate-ice-cream.glb"
+  },
+  {
+    "name": "Double Scoop Ice Cream",
+    "category": "Desserts",
+    "sub_category": "Ice Cream",
+    "image_url": "https://images.unsplash.com/photo-1501443762994-82bd5dabb892?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/double-scoop-ice-cream.glb"
+  },
+  {
+    "name": "Gulab Jamun",
+    "category": "Desserts",
+    "sub_category": "Indian Sweets",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/gulab-jamun.glb"
+  },
+  {
+    "name": "Rasgulla",
+    "category": "Desserts",
+    "sub_category": "Indian Sweets",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/rasgulla.glb"
+  },
+  {
+    "name": "Ras Malai",
+    "category": "Desserts",
+    "sub_category": "Indian Sweets",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/ras-malai.glb"
+  },
+  {
+    "name": "Jalebi",
+    "category": "Desserts",
+    "sub_category": "Indian Sweets",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/jalebi.glb"
+  },
+  {
+    "name": "Dessert Combo Plate",
+    "category": "Desserts",
+    "sub_category": "Combos",
+    "image_url": "https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/dessert-combo-plate.glb"
+  },
+  {
+    "name": "Brownie & Shake Combo",
+    "category": "Desserts",
+    "sub_category": "Combos",
+    "image_url": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/brownie--shake-combo.glb"
+  },
+  {
+    "name": "Regular Tea",
+    "category": "Drinks",
+    "sub_category": "Tea",
+    "image_url": "https://images.unsplash.com/photo-1544787210-2211d7c3becf?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/regular-tea.glb"
+  },
+  {
+    "name": "Masala Tea",
+    "category": "Drinks",
+    "sub_category": "Tea",
+    "image_url": "https://images.unsplash.com/photo-1544787210-2211d7c3becf?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/masala-tea.glb"
+  },
+  {
+    "name": "Milk Tea",
+    "category": "Drinks",
+    "sub_category": "Tea",
+    "image_url": "https://images.unsplash.com/photo-1544787210-2211d7c3becf?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/milk-tea.glb"
+  },
+  {
+    "name": "Cappuccino",
+    "category": "Drinks",
+    "sub_category": "Coffee",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/cappuccino.glb"
+  },
+  {
+    "name": "Latte",
+    "category": "Drinks",
+    "sub_category": "Coffee",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/latte.glb"
+  },
+  {
+    "name": "Vanilla Shake",
+    "category": "Drinks",
+    "sub_category": "Milkshakes",
+    "image_url": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/vanilla-shake.glb"
+  },
+  {
+    "name": "Chocolate Shake",
+    "category": "Drinks",
+    "sub_category": "Milkshakes",
+    "image_url": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/chocolate-shake.glb"
+  },
+  {
+    "name": "Oreo Shake",
+    "category": "Drinks",
+    "sub_category": "Milkshakes",
+    "image_url": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/oreo-shake.glb"
+  },
+  {
+    "name": "KitKat Shake",
+    "category": "Drinks",
+    "sub_category": "Milkshakes",
+    "image_url": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/kitkat-shake.glb"
+  },
+  {
+    "name": "Mango Shake",
+    "category": "Drinks",
+    "sub_category": "Milkshakes",
+    "image_url": "https://images.unsplash.com/photo-1572490122747-3968b75cc699?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/mango-shake.glb"
+  },
+  {
+    "name": "Virgin Mojito",
+    "category": "Drinks",
+    "sub_category": "Mocktails",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/virgin-mojito.glb"
+  },
+  {
+    "name": "Lemon Mint Mojito",
+    "category": "Drinks",
+    "sub_category": "Mocktails",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/lemon-mint-mojito.glb"
+  },
+  {
+    "name": "Blue Lagoon",
+    "category": "Drinks",
+    "sub_category": "Mocktails",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/blue-lagoon.glb"
+  },
+  {
+    "name": "Fruit Punch",
+    "category": "Drinks",
+    "sub_category": "Mocktails",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/fruit-punch.glb"
+  },
+  {
+    "name": "Watermelon Splash",
+    "category": "Drinks",
+    "sub_category": "Mocktails",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/watermelon-splash.glb"
+  },
+  {
+    "name": "Mint Cooler",
+    "category": "Drinks",
+    "sub_category": "Mocktails",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/mint-cooler.glb"
+  },
+  {
+    "name": "Orange Juice",
+    "category": "Drinks",
+    "sub_category": "Juices",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/orange-juice.glb"
+  },
+  {
+    "name": "Watermelon Juice",
+    "category": "Drinks",
+    "sub_category": "Juices",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/watermelon-juice.glb"
+  },
+  {
+    "name": "Pineapple Juice",
+    "category": "Drinks",
+    "sub_category": "Juices",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/pineapple-juice.glb"
+  },
+  {
+    "name": "Mixed Fruit Juice",
+    "category": "Drinks",
+    "sub_category": "Juices",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/mixed-fruit-juice.glb"
+  },
+  {
+    "name": "Sweet Lime Juice",
+    "category": "Drinks",
+    "sub_category": "Juices",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/sweet-lime-juice.glb"
+  },
+  {
+    "name": "Buttermilk (Chaas)",
+    "category": "Drinks",
+    "sub_category": "Traditional",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/buttermilk-chaas.glb"
+  },
+  {
+    "name": "Sweet Lassi",
+    "category": "Drinks",
+    "sub_category": "Traditional",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/sweet-lassi.glb"
+  },
+  {
+    "name": "Salted Lassi",
+    "category": "Drinks",
+    "sub_category": "Traditional",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/salted-lassi.glb"
+  },
+  {
+    "name": "Coconut Water",
+    "category": "Drinks",
+    "sub_category": "Traditional",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/coconut-water.glb"
+  },
+  {
+    "name": "Coke",
+    "category": "Drinks",
+    "sub_category": "Soft Drinks",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/coke.glb"
+  },
+  {
+    "name": "Pepsi",
+    "category": "Drinks",
+    "sub_category": "Soft Drinks",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/pepsi.glb"
+  },
+  {
+    "name": "Sprite",
+    "category": "Drinks",
+    "sub_category": "Soft Drinks",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/sprite.glb"
+  },
+  {
+    "name": "Red Bull",
+    "category": "Drinks",
+    "sub_category": "Soft Drinks",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/red-bull.glb"
+  },
+  {
+    "name": "Sting",
+    "category": "Drinks",
+    "sub_category": "Soft Drinks",
+    "image_url": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop",
+    "model_url": "/models/sting.glb"
+  }
+]

@@ -1,0 +1,317 @@
+/* ============================================================
+   ELITE CUSTOMER EXPERIENCE - Luxury Glassmorphism
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+    --elite-gold: #fbbf24;
+    --elite-dark: #0f172a;
+    --elite-slate: #1e293b;
+    --elite-glass: rgba(15, 23, 42, 0.6);
+    --elite-border: rgba(255, 255, 255, 0.1);
+    --elite-glow: rgba(251, 191, 36, 0.2);
+}
+
+.cp-container {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(10px, 4vw, 30px);
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Immersive Decorative Background (Optional: can be added in JSX) */
+.immersive-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(5px);
+}
+
+.glass-frame {
+    width: 100%;
+    max-width: 450px;
+    height: 92vh;
+    background: var(--elite-glass);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 32px;
+    border: 1px solid var(--elite-border);
+    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.cp-header {
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid var(--elite-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cp-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0;
+}
+
+.cp-table-badge {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--elite-gold);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.cp-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Cart List Gourmet Style */
+.cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    /* Increased gap */
+}
+
+.cart-item-glass {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--elite-border);
+    border-radius: 20px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.cart-item-glass:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(251, 191, 36, 0.3);
+    transform: translateX(5px);
+}
+
+.cart-item-img {
+    width: 65px;
+    height: 65px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.cart-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cart-item-info {
+    flex: 1;
+    margin: 0 15px;
+}
+
+.cart-item-info h3 {
+    font-size: 1rem;
+    margin: 0 0 4px 0;
+    color: #f1f5f9;
+}
+
+.variant-label {
+    font-size: 0.7rem;
+    color: var(--elite-gold);
+    background: rgba(251, 191, 36, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.cart-item-price {
+    color: #94a3b8;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.cart-item-qty {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 5px;
+    gap: 10px;
+}
+
+.cart-item-qty button {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.cart-item-qty button:hover {
+    background: var(--elite-gold);
+    color: #000;
+}
+
+.cart-item-qty span {
+    font-weight: 800;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Payment Layout Refinement */
+.pay-amount-display {
+    text-align: center;
+    padding: 2rem 0;
+    background: radial-gradient(circle at center, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
+}
+
+.pay-amount-display h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--elite-gold);
+    margin: 10px 0;
+    text-shadow: 0 0 30px var(--elite-glow);
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pay-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--elite-border);
+    border-radius: 20px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.pay-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.pay-card.selected {
+    background: rgba(251, 191, 36, 0.08);
+    border-color: var(--elite-gold);
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+}
+
+.pay-icon {
+    font-size: 1.5rem;
+}
+
+.pay-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.pay-info p {
+    margin: 3px 0 0 0;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.check-mark {
+    margin-left: auto;
+    color: var(--elite-gold);
+}
+
+/* Footer Section Elite */
+.cp-footer {
+    padding: 25px;
+    background: rgba(15, 23, 42, 0.8);
+    border-top: 1px solid var(--elite-border);
+}
+
+.footer-summ {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.footer-total {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--elite-gold);
+}
+
+.confirm-btn,
+.pay-now-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 15px -3px rgba(217, 119, 6, 0.3);
+    transition: all 0.3s ease;
+}
+
+.confirm-btn:hover,
+.pay-now-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgba(217, 119, 6, 0.4);
+}
+
+/* Mobile Scroll Fix */
+@media (max-width: 480px) {
+    .glass-frame {
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+    }
+
+    .cp-container {
+        padding: 0;
+    }
+}

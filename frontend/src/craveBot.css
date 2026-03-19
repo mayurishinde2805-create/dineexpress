@@ -1,0 +1,185 @@
+.crave-bot-wrapper {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+}
+
+.crave-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37, #b8860b);
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.crave-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.5);
+}
+
+.crave-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: rgba(10, 28, 21, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: scale(0.8) translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: bottom right;
+}
+
+.crave-bot-wrapper.open .crave-window {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.crave-header {
+    padding: 20px;
+    background: rgba(29, 61, 46, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.crave-header h3 {
+    margin: 0;
+    color: #d4af37;
+    font-size: 1.1rem;
+}
+
+.crave-header span {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.crave-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.msg-row {
+    display: flex;
+    width: 100%;
+}
+
+.msg-row.bot {
+    justify-content: flex-start;
+}
+
+.msg-row.user {
+    justify-content: flex-end;
+}
+
+.msg-bubble {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.bot .msg-bubble {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f5f5dc;
+    border-bottom-left-radius: 4px;
+}
+
+.user .msg-bubble {
+    background: #d4af37;
+    color: #0a1c15;
+    font-weight: 500;
+    border-bottom-right-radius: 4px;
+}
+
+.bot-suggestions {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.suggest-chip {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #d4af37;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.suggest-chip:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateX(5px);
+}
+
+.crave-input-area {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    gap: 10px;
+}
+
+.crave-input-area input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.85rem;
+}
+
+.crave-input-area input:focus {
+    outline: none;
+    border-color: #d4af37;
+}
+
+.crave-input-area button {
+    background: transparent;
+    border: none;
+    color: #d4af37;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.crave-input-area button:hover {
+    transform: scale(1.1);
+}
+
+/* Custom Scrollbar */
+.crave-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.crave-messages::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}

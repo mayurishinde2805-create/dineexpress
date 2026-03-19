@@ -1,15 +1,19 @@
+// Welcome.jsx
 import React from "react";
 import "./welcome.css";
 import bg from "./assets/bg.jpg";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Welcome() {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // QR मधून table number घेण्यासाठी
-  const params = new URLSearchParams(location.search);
+  // QR table number logic
+  const params = new URLSearchParams(window.location.search);
   const tableNo = params.get("table");
+
+  if (tableNo) {
+    localStorage.setItem("tableNo", tableNo);
+  }
 
   return (
     <div

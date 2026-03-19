@@ -1,0 +1,9 @@
+const db = require('./config/db');
+db.query('SELECT name, image_url FROM menu LIMIT 10', (err, res) => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log(JSON.stringify(res, null, 2));
+    }
+    process.exit();
+});

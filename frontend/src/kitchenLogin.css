@@ -1,0 +1,108 @@
+.kitchen-login-wrapper {
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+        url("https://images.unsplash.com/photo-1556910110-ad52897a227a?auto=format&fit=crop&q=80&w=2000");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.kitchen-card {
+    width: min(90%, 420px);
+    padding: 45px 35px;
+    background: rgba(18, 18, 18, 0.85);
+    /* Deep Charcoal */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.kitchen-card h2 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    letter-spacing: 1px;
+}
+
+.kitchen-subtitle {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    display: block;
+}
+
+.k-input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.k-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #fbbf24;
+    /* Amber Label */
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.k-input-group input {
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    outline: none;
+    color: #fff;
+}
+
+.k-input-group input:focus {
+    border-color: #f97316;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+}
+
+.kitchen-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+}
+
+.kitchen-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.5);
+}
+
+.kitchen-footer {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.kitchen-footer span {
+    color: #f97316;
+    cursor: pointer;
+    font-weight: bold;
+}

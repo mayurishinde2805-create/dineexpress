@@ -1,0 +1,165 @@
+/* DASHBOARD EXTENSIONS */
+.dashboard-frame {
+    max-width: 900px;
+    /* Broader for better desktop visibility */
+    padding: 2.5rem 3.5rem;
+    /* More breathing room */
+}
+
+/* TAB SWITCHER */
+.elite-tabs {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px;
+    border-radius: 16px;
+    margin-bottom: 2.5rem;
+    gap: 5px;
+}
+
+.tab-link {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-link.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fbbf24;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* MEMBER PROFILE CARD */
+.profile-section-elite {
+    padding-bottom: 2rem;
+}
+
+.member-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: 28px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.member-card::before {
+    content: 'DineExpress ELITE';
+    position: absolute;
+    top: 20px;
+    right: -30px;
+    background: #fbbf24;
+    color: #000;
+    padding: 5px 40px;
+    font-size: 0.6rem;
+    font-weight: 900;
+    transform: rotate(45deg);
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #000;
+    margin: 0 auto 2rem auto;
+    border: 4px solid rgba(251, 191, 36, 0.3);
+    box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
+}
+
+.member-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.detail-item label {
+    display: block;
+    font-size: 0.75rem;
+    color: #fbbf24;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.detail-item p {
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 0;
+    font-weight: 500;
+}
+
+.card-footer {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.membership-badge {
+    background: rgba(251, 191, 36, 0.1);
+    border: 1px solid #fbbf24;
+    color: #fbbf24;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* ANIMATIONS */
+.animate-in {
+    animation: slideUpFade 0.5s ease-out forwards;
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* REFINEMENTS */
+.order-item-row .price {
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.h-right {
+    text-align: right;
+    min-width: 80px;
+}
+
+@media (max-width: 480px) {
+    .dashboard-frame {
+        height: 100vh;
+        border-radius: 0;
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+
+    .member-card {
+        padding: 1.5rem;
+    }
+
+    .elite-tabs {
+        margin-bottom: 1.5rem;
+    }
+}
