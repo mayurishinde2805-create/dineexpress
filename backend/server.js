@@ -8,14 +8,18 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 
+const PORT = process.env.PORT || 4000;
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://192.168.1.113:3000",
+  "http://192.168.0.100:3000",
+  "http://192.168.0.102:3000",
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:3000",
-      "http://192.168.1.113:3000",
-      "http://192.168.0.100:3000",
-      "http://192.168.0.102:3000"
-    ],
+    origin: allowedOrigins.length > 0 ? allowedOrigins : "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -88,6 +92,6 @@ app.use('/api/admin/analytics', analyticsRoutes);
 app.use('/api/waiter-requests', require('./routes/waiterRequests'));
 app.use('/api/gallery', require('./routes/gallery'));
 
-server.listen(4000, () => {
-  console.log("Backend running on port 4000 with Socket.io");
+server.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT} with Socket.io`);
 });
