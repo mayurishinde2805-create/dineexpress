@@ -1,7 +1,7 @@
 const db = require("./config/db");
 
 const migrateToLive = async () => {
-    console.log("🚀 Starting Full Database Migration (Clean Slate)...");
+    console.log("🚀 Starting Full Database Migration (Corrected Schema)...");
 
     const dropTables = [
         "DROP TABLE IF EXISTS feedback",
@@ -13,19 +13,22 @@ const migrateToLive = async () => {
     ];
 
     const createTables = [
-        // 1. Users Table
+        // 1. Users Table (Aligned with login/register logic)
         `CREATE TABLE users (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
+            fullname VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
+            mobile VARCHAR(20),
             password VARCHAR(255) NOT NULL,
-            role ENUM('admin', 'customer', 'waiter', 'chef') DEFAULT 'customer',
-            kitchen_code VARCHAR(10),
+            role ENUM('admin', 'customer', 'waiter', 'chef', 'kitchen') DEFAULT 'customer',
+            admin_code VARCHAR(20),
+            kitchen_code VARCHAR(20),
             birthdate DATE,
+            is_verified BOOLEAN DEFAULT FALSE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`,
 
-        // 2. Menu Table (Aligned with seed_master_menu.js)
+        // 2. Menu Table
         `CREATE TABLE menu (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
@@ -79,20 +82,19 @@ const migrateToLive = async () => {
         // 6. OTPs Table
         `CREATE TABLE otps (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            email VARCHAR(255) NOT NULL,
+            email VARCHAR(255),
+            mobile VARCHAR(20),
             otp VARCHAR(6) NOT NULL,
             expires_at DATETIME NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )`
     ];
 
-    // Drop old tables
     for (let sql of dropTables) {
         await new Promise(resolve => db.query(sql, resolve));
     }
     console.log("🗑️ Old tables cleared.");
 
-    // Create new tables
     for (let sql of createTables) {
         try {
             await new Promise((resolve, reject) => {
@@ -107,7 +109,7 @@ const migrateToLive = async () => {
         }
     }
 
-    console.log("🌟 Migration Completed! Your live database is now perfectly structured.");
+    console.log("🌟 Migration Completed! Now seeding default admin...");
     process.exit();
 };
 
