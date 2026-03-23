@@ -27,7 +27,8 @@ router.post("/reset-password", authController.resetPassword);
 // Recover Code Route
 router.post("/recover-code", authController.recoverCode);
 
-// Diagnostic Route
+// Diagnostic Routes
+router.get("/hello", authController.helloTest);
 router.get("/test-email", authController.testEmail);
 
 module.exports = router;
