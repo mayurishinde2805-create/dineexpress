@@ -5,6 +5,7 @@ const authController = require("../controllers/authController");
 router.post("/register", authController.register);
 router.post("/verify-otp", authController.verifyOtp);
 router.post("/login", authController.login);
+router.post("/resend-otp", authController.resendOtp);
 
 // Admin Routes
 router.post("/admin/register", authController.registerAdmin);

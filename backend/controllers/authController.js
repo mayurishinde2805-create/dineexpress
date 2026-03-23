@@ -72,6 +72,29 @@ exports.verifyOtp = async (req, res) => {
   });
 };
 
+// RESEND OTP (Universal)
+exports.resendOtp = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ message: "Email required" });
+
+  db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
+    if (err || result.length === 0) return res.status(404).json({ message: "User not found" });
+
+    const user = result[0];
+    const mobile = user.mobile || "0000000000";
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const expires = new Date(Date.now() + 5 * 60000);
+
+    const otpSql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, ?, ?, ?)";
+    db.query(otpSql, [email, mobile, otp, expires], (err) => {
+      if (err) return res.status(500).json({ message: "Failed to generate new OTP" });
+      sendEmail(email, otp);
+      console.log(`RESEND OTP for ${email}: ${otp}`);
+      res.json({ success: true, message: "New OTP sent to your email" });
+    });
+  });
+};
+
 // LOGIN
 exports.login = (req, res) => {
   const { email, password } = req.body;
