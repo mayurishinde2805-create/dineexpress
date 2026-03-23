@@ -14,6 +14,7 @@ export default function Register() {
   const [mobile, setMobile] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
@@ -109,12 +110,20 @@ export default function Register() {
         </div>
         <p className="error-text">{ }</p>
 
-        <input
-          type="password"
-          placeholder={t("set_password")}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="password-input-wrapper">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder={t("set_password")}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <span 
+            className="password-toggle-icon" 
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "👁️" : "👁️‍🗨️"}
+          </span>
+        </div>
         <p className="error-text">{errors.password}</p>
 
         {message && <p className="error-text">{message}</p>}

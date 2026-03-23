@@ -12,16 +12,18 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail = (to, otp) => {
+  console.log(`[DEBUG] Attempting to send OTP to: ${to}`);
   transporter.sendMail({
-    from: "mayurishinde2805@gmail.com",
+    from: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
     to,
-    subject: "Your OTP",
-    text: `Your OTP is ${otp}`,
+    subject: "Your DineExpress OTP",
+    text: `Your OTP for DineExpress is: ${otp}. This code will expire in 5 minutes.`,
   }, (err, info) => {
     if (err) {
-      console.log("Error sending email:", err.message);
+      console.error("❌ [MAILER ERROR]:", err.message);
+      console.error("❌ Full Error Object:", JSON.stringify(err));
     } else {
-      console.log("Email sent:", info.response);
+      console.log("✅ [MAIL SENT SUCCESS]:", info.response);
     }
   });
 };

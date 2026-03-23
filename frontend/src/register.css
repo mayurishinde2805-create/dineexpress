@@ -69,6 +69,27 @@
   color: #eee;
 }
 
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+  z-index: 5;
+  padding: 5px;
+}
+
+.password-input-wrapper input {
+  padding-right: 45px !important; /* Make room for the eye icon */
+}
+
 /* VERY SMALL ERROR TEXT */
 .error-text {
   font-size: 11px;
