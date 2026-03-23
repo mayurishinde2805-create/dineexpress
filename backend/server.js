@@ -27,6 +27,10 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
+// Health Check Routes
+app.get("/", (req, res) => res.send("DineExpress Backend is LIVE 🚀"));
+app.get("/test", (req, res) => res.send("Test route working!"));
+
 // Basic request logging for debugging missing images
 app.use((req, res, next) => {
   if (req.url.includes('/images') || req.url.includes('/uploads')) {
