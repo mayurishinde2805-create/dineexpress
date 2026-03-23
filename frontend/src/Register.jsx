@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./register.css";
-import bg from "./assets/bg.jpg"; // Using a cleaner background as requested
+import bg from "./assets/register-bg.jpg"; 
 import { useLanguage } from "./context/LanguageContext";
 import API_BASE_URL from "./apiConfig";
 
@@ -18,6 +18,7 @@ export default function Register() {
 
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     let newErrors = {};
@@ -38,7 +39,7 @@ export default function Register() {
     else if (
       !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{1,12}$/.test(password)
     )
-      newErrors.password = "Use letter, number & symbol (max 12 chars)";
+      newErrors.password = "Min 8 chars, 1 letter, 1 number & 1 special";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -46,6 +47,8 @@ export default function Register() {
 
   const handleRegister = async () => {
     if (!validate()) return;
+    setLoading(true);
+    setMessage("");
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
@@ -56,81 +59,101 @@ export default function Register() {
 
       const data = await res.json();
 
-      if (!res.ok) setMessage(data.message);
-      else navigate("/verify-otp", { state: { email } });
+      if (!res.ok) {
+        setMessage(data.message);
+        setLoading(false);
+      } else {
+        navigate("/verify-otp", { state: { email } });
+      }
     } catch {
-      setMessage("Server not responding");
+      setMessage("Server not responding. Please try again.");
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      className="register-container"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
-      <div className="register-box">
-        <h2>{t("create_account")}</h2>
-
-        <input
-          type="text"
-          placeholder={t("full_name")}
-          value={fullname}
-          onChange={(e) => setFullName(e.target.value)}
-        />
-        <p className="error-text">{errors.fullname}</p>
-
-        <input
-          type="email"
-          placeholder={t("email_address")}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <p className="error-text">{errors.email}</p>
-
-        <input
-          type="text"
-          placeholder={t("mobile_no")}
-          value={mobile}
-          onChange={(e) => setMobile(e.target.value)}
-        />
-        <p className="error-text">{errors.mobile}</p>
-
-        <p className="error-text">{errors.mobile}</p>
-
-        <div className="input-field-group">
-          <label style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", display: "block", textAlign: "left", marginBottom: "5px" }}>
-            {t("birthdate")}
-          </label>
-          <input
-            type="date"
-            value={birthdate}
-            onChange={(e) => setBirthdate(e.target.value)}
-            style={{ color: birthdate ? "#fff" : "#eee" }}
-          />
+    <div className="register-page-wrapper" style={{ backgroundImage: `url(${bg})` }}>
+      <div className="overlay-gradient"></div>
+      
+      <div className="register-card">
+        <div className="brand-header">
+          <h1 className="brand-logo">DineExpress</h1>
+          <p className="brand-tagline">Experience the Art of Fine Dining</p>
         </div>
-        <p className="error-text">{ }</p>
 
-        <div className="password-input-wrapper">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder={t("set_password")}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span 
-            className="password-toggle-icon" 
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? "👁️" : "👁️‍🗨️"}
-          </span>
+        <div className="form-sections">
+          <div className="form-group-row">
+            <div className="input-box">
+              <label>{t("full_name")}</label>
+              <input
+                type="text"
+                value={fullname}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Ex. Mayuri Shinde"
+              />
+              {errors.fullname && <span className="err-msg">{errors.fullname}</span>}
+            </div>
+
+            <div className="input-box">
+              <label>{t("mobile_no")}</label>
+              <input
+                type="text"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                placeholder="10 Digits"
+              />
+              {errors.mobile && <span className="err-msg">{errors.mobile}</span>}
+            </div>
+          </div>
+
+          <div className="input-box">
+            <label>{t("email_address")}</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="example@gmail.com"
+            />
+            {errors.email && <span className="err-msg">{errors.email}</span>}
+          </div>
+
+          <div className="form-group-row">
+            <div className="input-box">
+              <label>{t("birthdate")}</label>
+              <input
+                type="date"
+                value={birthdate}
+                onChange={(e) => setBirthdate(e.target.value)}
+              />
+            </div>
+
+            <div className="input-box">
+              <label>{t("set_password")}</label>
+              <div className="pass-field">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+                <span className="eye-icon" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </span>
+              </div>
+              {errors.password && <span className="err-msg">{errors.password}</span>}
+            </div>
+          </div>
         </div>
-        <p className="error-text">{errors.password}</p>
 
-        {message && <p className="error-text">{message}</p>}
+        {message && <div className="status-toast error">{message}</div>}
 
-        <button className="create-btn" onClick={handleRegister}>
-          {t("create_account")}
+        <button className="gold-btn" onClick={handleRegister} disabled={loading}>
+          {loading ? "Creating..." : t("create_account")}
         </button>
+
+        <div className="card-footer">
+          <p>Already have an account? <Link to="/login">Login</Link></p>
+        </div>
       </div>
     </div>
   );

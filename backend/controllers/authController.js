@@ -472,3 +472,54 @@ exports.recoverCode = (req, res) => {
     res.json({ message: "Success", code });
   });
 };
+
+// TEST EMAIL (For Debugging)
+exports.testEmail = async (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ message: "Email query param required" });
+
+  console.log(`\n📧 [DIAGNOSTIC] Running Test Email for: ${email}`);
+  
+  const testOtp = "123456";
+  const nodemailer = require("nodemailer");
+
+  // Re-create transporter here for direct debugging
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
+      pass: process.env.EMAIL_PASS || "cvnevlfnedvklsbo",
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+
+  transporter.sendMail({
+    from: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
+    to: email,
+    subject: "DIAGNOSTIC: DineExpress Test Email",
+    text: "If you are reading this, your DineExpress mailer is working perfectly! OTP: 123456",
+  }, (err, info) => {
+    if (err) {
+      console.error("❌ [DIAGNOSTIC ERROR]:", err);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Email Failed", 
+        error_name: err.name,
+        error_msg: err.message,
+        error_code: err.code,
+        full_error: err 
+      });
+    } else {
+      console.log("✅ [DIAGNOSTIC SUCCESS]:", info.response);
+      return res.json({ 
+        success: true, 
+        message: "Email Sent Successfully!", 
+        response: info.response 
+      });
+    }
+  });
+};
