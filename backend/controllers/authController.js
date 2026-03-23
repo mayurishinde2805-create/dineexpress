@@ -486,8 +486,8 @@ exports.testEmail = async (req, res) => {
   // Re-create transporter here for direct debugging
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false, // Use STARTTLS
     auth: {
       user: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
       pass: process.env.EMAIL_PASS || "cvnevlfnedvklsbo",
