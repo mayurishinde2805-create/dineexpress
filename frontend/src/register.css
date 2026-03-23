@@ -72,22 +72,31 @@
 .password-input-wrapper {
   position: relative;
   width: 100%;
+  margin-top: 4px; /* Match the margin of other inputs */
+}
+
+.password-input-wrapper input {
+  margin: 0 !important; /* Reset margin since wrapper has it */
+  padding-right: 40px !important;
 }
 
 .password-toggle-icon {
   position: absolute;
-  right: 12px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
   user-select: none;
-  z-index: 5;
-  padding: 5px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.password-input-wrapper input {
-  padding-right: 45px !important; /* Make room for the eye icon */
+.password-toggle-icon:hover {
+  color: #fff;
 }
 
 /* VERY SMALL ERROR TEXT */
