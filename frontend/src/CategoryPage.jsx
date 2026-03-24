@@ -51,12 +51,16 @@ export default function CategoryPage() {
         setLoading(true);
         axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
             .then(res => {
-                const catLabel = categoryMap[categoryName]?.label || "Starters";
+                const catLabel = (categoryMap[categoryName]?.label || "Starters").toLowerCase();
                 const allItems = res.data;
 
-                const items = allItems.filter(item =>
-                    (item.display_category || item.category || "").trim().toLowerCase() === catLabel.toLowerCase()
-                );
+                const items = allItems.filter(item => {
+                    const itemCat = (item.display_category || item.category || "").trim().toLowerCase();
+                    // Match if itemCat is same, or if one is singular/plural variant
+                    return itemCat === catLabel || 
+                           itemCat.includes(catLabel.slice(0,-1)) || 
+                           catLabel.includes(itemCat.slice(0,-1));
+                });
                 setMenuItems(items);
 
                 const subsMap = new Map();
