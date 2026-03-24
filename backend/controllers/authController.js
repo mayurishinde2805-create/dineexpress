@@ -669,11 +669,22 @@ exports.setupDb = async (req, res) => {
 
 exports.checkEnv = (req, res) => {
   const mysqlUrl = process.env.MYSQL_URL || process.env.DATABASE_URL;
+  let maskedUrl = "NONE";
+  if (mysqlUrl) {
+    const parts = mysqlUrl.split('@');
+    if (parts.length > 1) {
+      maskedUrl = "mysql://****:****@" + parts[1];
+    } else {
+      maskedUrl = mysqlUrl.substring(0, 15) + "...";
+    }
+  }
+
   res.json({
     mysql_url_exists: !!mysqlUrl,
-    mysql_url_prefix: mysqlUrl ? mysqlUrl.substring(0, 15) + "..." : "NONE",
-    db_host: process.env.DB_HOST || "localhost",
-    db_user: process.env.DB_USER || "root",
-    node_env: process.env.NODE_ENV || "development"
+    mysql_url_masked: maskedUrl,
+    db_host: process.env.DB_HOST || "NONE",
+    db_user: process.env.DB_USER || "NONE",
+    node_env: process.env.NODE_ENV || "development",
+    message: "Check your Render Logs for [DB] Patching message to confirm host replacement."
   });
 };

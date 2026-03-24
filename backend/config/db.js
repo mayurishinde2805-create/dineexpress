@@ -4,20 +4,20 @@ require('dotenv').config();
 const getPoolConfig = () => {
   let url = process.env.MYSQL_URL || process.env.DATABASE_URL;
   
-  // SELF-HEALING: If the URL contains the internal Railway hostname, 
-  // try to replace it with the public host provided in DB_HOST.
+  // GLOBAL SELF-HEALING: Replace ALL occurrences of the internal hostname
   if (url && url.includes('mysql.railway.internal')) {
-    console.warn("⚠️ [DB] Internal Railway hostname detected in URL. Attempting self-healing...");
-    if (process.env.DB_HOST && !process.env.DB_HOST.includes('railway.internal')) {
-      url = url.replace('mysql.railway.internal', process.env.DB_HOST);
-    } else {
-      // Fallback if DB_HOST is also internal or missing
-      url = url.replace('mysql.railway.internal', 'caboose.proxy.rlwy.net');
-    }
+    console.warn("⚠️ [DB] Internal Railway hostname detected in URL. Patching...");
+    const publicHost = (process.env.DB_HOST && !process.env.DB_HOST.includes('railway.internal')) 
+      ? process.env.DB_HOST 
+      : 'caboose.proxy.rlwy.net';
+    
+    // Global replacement to be safe
+    url = url.split('mysql.railway.internal').join(publicHost);
+    console.log(`📡 [DB] Patched Host to: ${publicHost}`);
   }
 
   if (url) {
-    console.log("📡 [DB] Using URI for Database connection...");
+    console.log("📡 [DB] Initializing with URI source...");
     return {
       uri: url,
       ssl: { rejectUnauthorized: false },
