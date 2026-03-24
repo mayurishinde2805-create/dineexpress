@@ -31,5 +31,6 @@ router.post("/recover-code", authController.recoverCode);
 router.get("/hello", authController.helloTest);
 router.get("/test-email", authController.testEmail);
 router.get("/setup-db", authController.setupDb);
+router.get("/check-env", authController.checkEnv);
 
 module.exports = router;

@@ -666,3 +666,14 @@ exports.setupDb = async (req, res) => {
     res.status(500).json({ success: false, message: "Table setup failed", error: err.message });
   }
 };
+
+exports.checkEnv = (req, res) => {
+  const mysqlUrl = process.env.MYSQL_URL || process.env.DATABASE_URL;
+  res.json({
+    mysql_url_exists: !!mysqlUrl,
+    mysql_url_prefix: mysqlUrl ? mysqlUrl.substring(0, 15) + "..." : "NONE",
+    db_host: process.env.DB_HOST || "localhost",
+    db_user: process.env.DB_USER || "root",
+    node_env: process.env.NODE_ENV || "development"
+  });
+};
