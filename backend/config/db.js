@@ -2,24 +2,25 @@ const mysql = require("mysql2");
 require('dotenv').config();
 
 const getPoolConfig = () => {
-  let url = process.env.MYSQL_URL || process.env.DATABASE_URL;
-  
-  // GLOBAL SELF-HEALING: Replace ALL occurrences of the internal hostname
-  if (url && url.includes('mysql.railway.internal')) {
-    console.warn("⚠️ [DB] Internal Railway hostname detected in URL. Patching...");
-    const publicHost = (process.env.DB_HOST && !process.env.DB_HOST.includes('railway.internal')) 
-      ? process.env.DB_HOST 
-      : 'caboose.proxy.rlwy.net';
-    
-    // Global replacement to be safe
-    url = url.split('mysql.railway.internal').join(publicHost);
-    console.log(`📡 [DB] Patched Host to: ${publicHost}`);
-  }
+  const mysqlUrl = process.env.MYSQL_URL || process.env.DATABASE_URL || "";
+  const dbHost = process.env.DB_HOST || "localhost";
+  const dbUser = process.env.DB_USER || "root";
+  const dbPass = process.env.DB_PASSWORD || "1234";
+  const dbName = process.env.DB_NAME || "dineexpress";
+  const dbPort = process.env.DB_PORT || 3306;
 
-  if (url) {
-    console.log("📡 [DB] Initializing with URI source...");
+  // If MYSQL_URL is internal OR DB_HOST is already provided as a public proxy,
+  // we prefer the individual components to be 100% sure.
+  if (mysqlUrl.includes('mysql.railway.internal') || 
+      (dbHost && !dbHost.includes('railway.internal') && dbHost !== 'localhost')) {
+    
+    console.log(`📡 [DB] Connecting via Public Host: ${dbHost}`);
     return {
-      uri: url,
+      host: dbHost,
+      user: dbUser,
+      password: dbPass,
+      database: dbName,
+      port: dbPort,
       ssl: { rejectUnauthorized: false },
       waitForConnections: true,
       connectionLimit: 10,
@@ -29,30 +30,36 @@ const getPoolConfig = () => {
     };
   }
 
-  // Standard Local Configuration
+  // Fallback to URI if it seems okay
+  if (mysqlUrl) {
+    console.log("📡 [DB] Initializing with URI source...");
+    return {
+      uri: mysqlUrl.includes('?') 
+          ? `${mysqlUrl}&ssl={"rejectUnauthorized":false}` 
+          : `${mysqlUrl}?ssl={"rejectUnauthorized":false}`,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 10000
+    };
+  }
+
+  // Local Default
   return {
-    host: process.env.DB_HOST || "localhost",
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD || "1234",
-    database: process.env.DB_NAME || "dineexpress",
-    port: process.env.DB_PORT || 3306,
-    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : null,
+    host: "localhost",
+    user: "root",
+    password: "password", // fallback
+    database: "dineexpress",
+    port: 3306,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0,
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 10000
+    queueLimit: 0
   };
 };
 
 const poolConfig = getPoolConfig();
-
-// Safely handle URI vs Object config
-const db = (poolConfig.uri) 
-  ? mysql.createPool(poolConfig.uri.includes('?') 
-      ? `${poolConfig.uri}&ssl={"rejectUnauthorized":false}` 
-      : `${poolConfig.uri}?ssl={"rejectUnauthorized":false}`)
-  : mysql.createPool(poolConfig);
+const db = mysql.createPool(poolConfig);
 
 db.on('error', (err) => {
   console.error('🔥 [DB POOL ERROR]:', err.code, err.message);
