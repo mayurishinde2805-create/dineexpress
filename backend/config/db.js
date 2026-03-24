@@ -59,7 +59,7 @@ const getPoolConfig = () => {
 };
 
 const poolConfig = getPoolConfig();
-const db = mysql.createPool(poolConfig);
+const db = (poolConfig.uri) ? mysql.createPool(poolConfig.uri) : mysql.createPool(poolConfig);
 
 db.on('error', (err) => {
   console.error('🔥 [DB POOL ERROR]:', err.code, err.message);
