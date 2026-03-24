@@ -2,6 +2,7 @@ const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 const sendEmail = require("../utils/mailer");
 const nodemailer = require("nodemailer");
+const axios = require("axios");
 
 // BASIC HELLO TEST
 exports.helloTest = (req, res) => {
