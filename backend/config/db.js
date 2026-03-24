@@ -2,11 +2,22 @@ const mysql = require("mysql2");
 require('dotenv').config();
 
 const getPoolConfig = () => {
-  const url = process.env.MYSQL_URL || process.env.DATABASE_URL;
+  let url = process.env.MYSQL_URL || process.env.DATABASE_URL;
+  
+  // SELF-HEALING: If the URL contains the internal Railway hostname, 
+  // try to replace it with the public host provided in DB_HOST.
+  if (url && url.includes('mysql.railway.internal')) {
+    console.warn("⚠️ [DB] Internal Railway hostname detected in URL. Attempting self-healing...");
+    if (process.env.DB_HOST && !process.env.DB_HOST.includes('railway.internal')) {
+      url = url.replace('mysql.railway.internal', process.env.DB_HOST);
+    } else {
+      // Fallback if DB_HOST is also internal or missing
+      url = url.replace('mysql.railway.internal', 'caboose.proxy.rlwy.net');
+    }
+  }
+
   if (url) {
-    // For Railway/Aiven/Hero/etc URIs
     console.log("📡 [DB] Using URI for Database connection...");
-    // Force SSL for cloud URIs as it's often required
     return {
       uri: url,
       ssl: { rejectUnauthorized: false },
