@@ -484,9 +484,40 @@ exports.testEmail = async (req, res) => {
   const { email } = req.query;
   if (!email) return res.status(400).json({ message: "Email query param required" });
 
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const BREVO_API_KEY = process.env.BREVO_API_KEY;
   console.log(`\n📧 [DIAGNOSTIC] Running Test Email for: ${email}`);
 
+  // 1. TEST RESEND
+  if (RESEND_API_KEY) {
+    console.log("[DIAGNOSTIC] Using Resend API Path");
+    try {
+      const response = await axios.post('https://api.resend.com/emails', {
+        from: 'DineExpress <onboarding@resend.dev>',
+        to: [email],
+        subject: 'DIAGNOSTIC: DineExpress Resend Test',
+        html: '<p>If you are reading this, your DineExpress <strong>RESEND API</strong> is working!</p>'
+      }, {
+        headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' }
+      });
+      
+      return res.json({ 
+        success: true, 
+        method: "RESEND_API",
+        message: "Email Sent Successfully via Resend!", 
+        response: response.data 
+      });
+    } catch (err) {
+      return res.status(500).json({ 
+        success: false, 
+        method: "RESEND_API",
+        message: "Resend API Failed", 
+        error_details: err.response?.data || err.message 
+      });
+    }
+  }
+
+  // 2. TEST BREVO
   if (BREVO_API_KEY) {
     console.log("[DIAGNOSTIC] Using Brevo API Path");
     try {
@@ -507,7 +538,6 @@ exports.testEmail = async (req, res) => {
         response: response.data 
       });
     } catch (err) {
-      console.error("❌ [DIAGNOSTIC BREVO ERROR]:", err.response?.data || err.message);
       return res.status(500).json({ 
         success: false, 
         method: "BREVO_API",
@@ -515,41 +545,41 @@ exports.testEmail = async (req, res) => {
         error_details: err.response?.data || err.message 
       });
     }
-  } else {
-    console.log("[DIAGNOSTIC] Using SMTP Fallback Path");
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
-        pass: process.env.EMAIL_PASS || "cvnevlfnedvklsbo",
-      },
-      tls: {
-        rejectUnauthorized: false
-      }
-    });
-
-    transporter.sendMail({
-      from: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
-      to: email,
-      subject: "DIAGNOSTIC: DineExpress SMTP Test",
-      text: "Testing SMTP fallback. This will likely time out on Render.",
-    }, (err, info) => {
-      if (err) {
-        return res.status(500).json({ 
-          success: false, 
-          method: "SMTP_FALLBACK",
-          message: "SMTP Failed (Typical for Render)", 
-          error_msg: err.message,
-          error_code: err.code
-        });
-      } else {
-        return res.json({ 
-          success: true, 
-          method: "SMTP_FALLBACK",
-          message: "SMTP Sent Successfully!", 
-          response: info.response 
-        });
-      }
-    });
   }
+
+  // 3. TEST SMTP FALLBACK
+  console.log("[DIAGNOSTIC] Using SMTP Fallback Path");
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
+      pass: process.env.EMAIL_PASS || "cvnevlfnedvklsbo",
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+
+  transporter.sendMail({
+    from: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
+    to: email,
+    subject: "DIAGNOSTIC: DineExpress SMTP Test",
+    text: "Testing SMTP fallback. This will likely time out on Render.",
+  }, (err, info) => {
+    if (err) {
+      return res.status(500).json({ 
+        success: false, 
+        method: "SMTP_FALLBACK",
+        message: "SMTP Failed (Blocked on Render)", 
+        error_msg: err.message
+      });
+    } else {
+      return res.json({ 
+        success: true, 
+        method: "SMTP_FALLBACK",
+        message: "SMTP Sent Successfully!", 
+        response: info.response 
+      });
+    }
+  });
 };
