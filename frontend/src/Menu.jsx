@@ -39,10 +39,10 @@ export default function Menu() {
 
     axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
       .then(res => {
-        const allowedCategories = ['Starters', 'Main Course', 'Desserts', 'Drinks'];
+        const allowedCategories = ['Starters', 'Main Menu', 'Desserts', 'Drinks'];
         const filteredData = res.data.filter(item => {
-          const cat = item.display_category || item.category;
-          return allowedCategories.includes(cat);
+          const cat = (item.display_category || item.category || "").trim();
+          return allowedCategories.some(allowed => allowed.toLowerCase() === cat.toLowerCase());
         });
         setMenuItems(filteredData);
         setCategories(["All", ...allowedCategories]);
@@ -59,6 +59,14 @@ export default function Menu() {
 
     return () => socket.off("statusUpdated");
   }, [activeOrder, language]);
+
+  // Helper to generate full image URL
+  const getFullImageUrl = (path) => {
+    if (!path) return `https://source.unsplash.com/400x300/?food`;
+    if (path.startsWith('http')) return path;
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    return `${API_BASE_URL}${normalizedPath}`;
+  };
 
   // --- ACTIONS ---
   const handleCallWaiter = () => {
@@ -85,9 +93,9 @@ export default function Menu() {
   };
 
   const filteredItems = menuItems.filter(item => {
-    const itemCat = item.display_category || item.category;
+    const itemCat = (item.display_category || item.category || "").trim().toLowerCase();
     const itemName = item.display_name || item.name;
-    const matchesCat = selectedCategory === "All" || itemCat === selectedCategory;
+    const matchesCat = selectedCategory === "All" || itemCat === selectedCategory.toLowerCase();
     const matchesSearch = itemName.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCat && matchesSearch;
   });
@@ -105,25 +113,12 @@ export default function Menu() {
         </div>
       </header>
 
-      {/* Elite Cinematic Hero Section */}
-      <section className="elite-cinematic-hero">
-        <div className="elite-bg-glow"></div>
-        <div className="elite-hero-content">
-          <div className="elite-label">DINEEXPRESS EXCLUSIVE</div>
-          <h1 className="cinematic-title">
-            <span className="line-1">SAVOR</span>
-            <span className="line-2">THE</span>
-            <span className="line-3">EXTRAORDINARY</span>
-          </h1>
-          <p className="elite-subtitle">A curated journey of taste, crafted for the true connoisseur. Discover our masterpiece collection.</p>
-          <div className="elite-scroll-indicator">
-            <span className="scroll-arrow">↓</span>
-            <span>Explore Menu</span>
-          </div>
+      {/* Simple Hero Section */}
+      <section className="menu-simple-hero">
+        <div className="hero-inner">
+          <h1 className="cinematic-title">Our Menu</h1>
+          <p className="elite-subtitle">{t("premium_experience")}</p>
         </div>
-        {/* Floating garnish/spice imagery for luxury feel without using standard plate photos */}
-        <div className="floating-element garnish-1"></div>
-        <div className="floating-element garnish-2"></div>
       </section>
 
       {/* Advanced Search */}
@@ -177,7 +172,7 @@ export default function Menu() {
             <div key={item.id} className="dish-card-v2">
               <span className={`diet-pill ${item.diet}`}></span>
               <img
-                src={item.image_url || `https://source.unsplash.com/400x300/?${item.name},food`}
+                src={getFullImageUrl(item.image_url)}
                 className="dish-img-v2"
                 alt={item.name}
               />
@@ -241,7 +236,7 @@ export default function Menu() {
               {/* Process current dish image for depth */}
               <img
                 ref={arImageRef}
-                src={arDish.image_url || `https://source.unsplash.com/600x600/?${arDish.name},food`}
+                src={getFullImageUrl(arDish.image_url)}
                 crossOrigin="anonymous"
                 style={{ display: 'none' }}
                 onLoad={async () => {
@@ -268,7 +263,7 @@ export default function Menu() {
                 <DepthImage3D image={arDish} depthMapCanvas={depthCanvas} />
               ) : (
                 <div className="ar-dish-view-fallback">
-                  <img src={arDish.image_url} alt="dish" className="ar-dish-view" />
+                  <img src={getFullImageUrl(arDish.image_url)} alt="dish" className="ar-dish-view" />
                   {!isEstimating && <div className="ar-scanner-line"></div>}
                 </div>
               )}

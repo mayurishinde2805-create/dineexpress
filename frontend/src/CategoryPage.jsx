@@ -41,31 +41,31 @@ export default function CategoryPage() {
 
     // Helper to generate full image URL
     const getFullImageUrl = (path) => {
-        if (!path) return "";
+        if (!path) return "https://source.unsplash.com/400x300/?food";
         if (path.startsWith('http')) return path;
         const normalizedPath = path.startsWith('/') ? path : `/${path}`;
         return `${API_BASE_URL}${normalizedPath}`;
     };
 
     useEffect(() => {
+        setLoading(true);
         axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
             .then(res => {
-                // Filter items using ORIGINAL (English) category names
-                // categoryMap keys match the English category column in DB
-                const catLabel = categoryMap[categoryName]?.label || "Starters"; // Fallback/match logic
+                const catLabel = categoryMap[categoryName]?.label || "Starters";
+                const allItems = res.data;
 
-                const items = res.data.filter(item =>
-                    item.category?.toLowerCase() === catLabel?.toLowerCase() // English vs English
+                const items = allItems.filter(item =>
+                    (item.display_category || item.category || "").trim().toLowerCase() === catLabel.toLowerCase()
                 );
-                setMenuItems(res.data);
+                setMenuItems(items);
 
-                // Create unique sub-categories list with both Original and Display names
                 const subsMap = new Map();
                 items.forEach(item => {
-                    if (item.sub_category && !subsMap.has(item.sub_category)) {
-                        subsMap.set(item.sub_category, {
-                            original: item.sub_category,
-                            display: item.display_sub_category || item.sub_category
+                    const subKey = item.sub_category || "General";
+                    if (!subsMap.has(subKey)) {
+                        subsMap.set(subKey, {
+                            original: subKey,
+                            display: item.display_sub_category || subKey
                         });
                     }
                 });

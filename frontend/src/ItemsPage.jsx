@@ -37,12 +37,12 @@ export default function ItemsPage() {
         "drinks": "Drinks"
     };
 
-    const dbCategory = categoryMap[categoryName]; // "Starters"
-    const dbSubCategory = decodeURIComponent(subCategoryName); // "Veg Starters" (English)
+    const dbCategory = categoryMap[categoryName];
+    const dbSubCategory = subCategoryName ? decodeURIComponent(subCategoryName) : null;
 
     // Helper to generate full image URL
     const getFullImageUrl = (path) => {
-        if (!path) return "/images/placeholder.png";
+        if (!path) return "https://source.unsplash.com/400x300/?food";
         if (path.startsWith('http')) return path;
         const normalizedPath = path.startsWith('/') ? path : `/${path}`;
         return `${API_BASE_URL}${normalizedPath}`;
@@ -50,43 +50,24 @@ export default function ItemsPage() {
 
 
     useEffect(() => {
-
-        console.log("🔍 DineExpress Visuals Debug:");
-        console.log("- WebGL Support:", !!window.WebGLRenderingContext);
-        console.log("- User Agent:", navigator.userAgent);
-
-        if (navigator.xr) {
-            navigator.xr.isSessionSupported('immersive-ar').then(supported => {
-                console.log("- WebXR AR Support:", supported);
-            });
-        } else {
-            console.log("- WebXR AR Support: NOT FOUND (Legacy device or browser)");
-        }
-
-        // Use API_BASE_URL imported from apiConfig.js
+        setLoading(true);
         axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
             .then(res => {
                 const fetchedItems = res.data;
-                console.log(`- Fetched ${fetchedItems.length} total items.`);
-
+                
                 const filteredItems = fetchedItems.filter(item => {
-                    const itemCat = (item.category || "").trim().toLowerCase();
+                    const itemCat = (item.display_category || item.category || "").trim().toLowerCase();
                     const targetCat = (dbCategory || "").trim().toLowerCase();
-                    // In CategoryPage, we send `encodeURIComponent(sub.original)`
-                    // dbSubCategory in ItemsPage is `decodeURIComponent(subCategoryName)`
-                    // item.sub_category is what we should match against.
-                    const itemSub = (item.sub_category || "").trim().toLowerCase();
+                    const itemSub = (item.display_sub_category || item.sub_category || "").trim().toLowerCase();
                     const targetSub = (dbSubCategory || "").trim().toLowerCase();
 
+                    if (!dbSubCategory) return itemCat === targetCat;
                     return itemCat === targetCat && itemSub === targetSub;
                 });
 
-                console.log(`- Filtered to ${filteredItems.length} items for ${dbCategory} > ${dbSubCategory}`);
-
-                if (filteredItems.length === 0 && fetchedItems.some(i => (i.category || "").trim().toLowerCase() === (dbCategory || "").trim().toLowerCase())) {
-                    console.warn("⚠️ Filter returned 0. Falling back to category-wide match.");
-                    const catItems = fetchedItems.filter(i => (i.category || "").trim().toLowerCase() === (dbCategory || "").trim().toLowerCase());
-                    setItems(catItems);
+                if (filteredItems.length === 0 && dbCategory) {
+                    const catFallback = fetchedItems.filter(i => (i.display_category || i.category || "").trim().toLowerCase() === dbCategory.toLowerCase());
+                    setItems(catFallback);
                 } else {
                     setItems(filteredItems);
                 }
@@ -133,7 +114,7 @@ export default function ItemsPage() {
 
     const handleCallWaiter = async () => {
         try {
-            await axios.post("http://192.168.1.113:4000/api/waiter-requests", { table: tableNo });
+            await axios.post(`${API_BASE_URL}/api/waiter-requests`, { table: tableNo });
             alert(t("waiter_called"));
         } catch (err) {
             console.error("Error calling waiter:", err);
