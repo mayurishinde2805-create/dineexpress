@@ -30,5 +30,6 @@ router.post("/recover-code", authController.recoverCode);
 // Diagnostic Routes
 router.get("/hello", authController.helloTest);
 router.get("/test-email", authController.testEmail);
+router.get("/setup-db", authController.setupDb);
 
 module.exports = router;

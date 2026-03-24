@@ -584,3 +584,85 @@ exports.testEmail = async (req, res) => {
     }
   });
 };
+exports.setupDb = async (req, res) => {
+  console.log("🛠️ [DIAGNOSTIC] Running Database Table Setup...");
+  
+  const queries = [
+    `CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      fullname VARCHAR(255),
+      email VARCHAR(255) UNIQUE,
+      mobile VARCHAR(20),
+      password VARCHAR(255),
+      birthdate DATE,
+      role ENUM('customer', 'admin', 'kitchen') DEFAULT 'customer',
+      is_verified BOOLEAN DEFAULT 0,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS otps (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(255),
+      mobile VARCHAR(20),
+      otp INT,
+      expires_at DATETIME,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS menu_items (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255),
+      display_name VARCHAR(255),
+      description TEXT,
+      display_description TEXT,
+      price DECIMAL(10,2),
+      category VARCHAR(100),
+      display_category VARCHAR(100),
+      sub_category VARCHAR(100),
+      display_sub_category VARCHAR(100),
+      image_url VARCHAR(255),
+      diet ENUM('veg', 'non-veg', 'egg'),
+      variants TEXT,
+      display_variants TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS orders (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT,
+      table_no INT,
+      total_amount DECIMAL(10,2),
+      status ENUM('Placed', 'Preparing', 'Ready', 'Served', 'Cancelled') DEFAULT 'Placed',
+      payment_method VARCHAR(50),
+      payment_status VARCHAR(50),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS order_items (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      order_id INT,
+      menu_item_id INT,
+      quantity INT,
+      price DECIMAL(10,2),
+      variant VARCHAR(100),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS waiter_requests (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      table_no INT,
+      status ENUM('pending', 'responded') DEFAULT 'pending',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`
+  ];
+
+  try {
+    for (const sql of queries) {
+      await new Promise((resolve, reject) => {
+        db.query(sql, (err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+    }
+    res.json({ success: true, message: "All tables verified and created successfully!" });
+  } catch (err) {
+    console.error("❌ [SETUP DB ERROR]:", err.message);
+    res.status(500).json({ success: false, message: "Table setup failed", error: err.message });
+  }
+};
