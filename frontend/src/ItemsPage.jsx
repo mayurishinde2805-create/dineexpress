@@ -56,9 +56,9 @@ export default function ItemsPage() {
                 const fetchedItems = Array.isArray(res.data) ? res.data : [];
                 
                 const filteredItems = fetchedItems.filter(item => {
-                    const itemCat = (item.display_category || item.category || "").trim().toLowerCase();
+                    const itemCat = (item.category_en || item.category || "").trim().toLowerCase();
                     const targetCat = (dbCategory || "").trim().toLowerCase();
-                    const itemSub = (item.display_sub_category || item.sub_category || "").trim().toLowerCase();
+                    const itemSub = (item.sub_category_en || item.sub_category || "").trim().toLowerCase();
                     const targetSub = (dbSubCategory || "").trim().toLowerCase();
 
                     if (!dbSubCategory) return itemCat === targetCat;
@@ -66,7 +66,7 @@ export default function ItemsPage() {
                 });
 
                 if (filteredItems.length === 0 && dbCategory) {
-                    const catFallback = fetchedItems.filter(i => (i.display_category || i.category || "").trim().toLowerCase() === dbCategory.toLowerCase());
+                    const catFallback = fetchedItems.filter(i => (i.category_en || i.category || "").trim().toLowerCase() === dbCategory.toLowerCase());
                     setItems(catFallback);
                 } else {
                     setItems(filteredItems);
