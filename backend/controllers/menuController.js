@@ -1,7 +1,35 @@
 const db = require('../config/db');
 
 exports.getMenu = (req, res) => {
-    const sql = "SELECT * FROM menu_items";
+    const lang = req.query.lang;
+    let sql = "";
+
+    if (lang === 'hi') {
+        sql = `SELECT *, 
+               COALESCE(name_hi, name) as display_name, 
+               COALESCE(description_hi, description) as display_description, 
+               COALESCE(category_hi, category) as display_category, 
+               COALESCE(sub_category_hi, sub_category) as display_sub_category,
+               COALESCE(variants_hi, variants) as display_variants
+               FROM menu_items`;
+    } else if (lang === 'mr') {
+        sql = `SELECT *, 
+               COALESCE(name_mr, name) as display_name, 
+               COALESCE(description_mr, description) as display_description, 
+               COALESCE(category_mr, category) as display_category, 
+               COALESCE(sub_category_mr, sub_category) as display_sub_category,
+               COALESCE(variants_mr, variants) as display_variants
+               FROM menu_items`;
+    } else {
+        sql = `SELECT *, 
+               name as display_name, 
+               description as display_description, 
+               category as display_category, 
+               sub_category as display_sub_category,
+               variants as display_variants
+               FROM menu_items`;
+    }
+
     db.query(sql, (err, rows) => {
         if (err) return res.status(500).send(err);
         res.send(rows);

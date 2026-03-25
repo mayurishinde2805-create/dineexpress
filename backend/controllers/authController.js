@@ -767,16 +767,16 @@ exports.restoreFullMenu = async (req, res) => {
 
     for (const i of fullItems) {
       const sql = `INSERT INTO menu_items 
-        (name, display_name, category, display_category, sub_category, display_sub_category, price, diet, description, display_description) 
+        (name, name_mr, category, category_mr, sub_category, sub_category_mr, price, diet, description, description_mr) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
       await new Promise((resolve, reject) => {
         db.query(sql, [
-          i.name, i.name, 
+          i.name, translate(i.name), 
           i.cat, translate(i.cat), 
           i.sub, translate(i.sub), 
           i.p, i.d, 
-          i.name, i.name
+          i.name, translate(i.name)
         ], (err) => {
           if (err) reject(err);
           else resolve();
