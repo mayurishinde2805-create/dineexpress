@@ -688,3 +688,29 @@ exports.checkEnv = (req, res) => {
     message: "Check your Render Logs for [DB] Patching message to confirm host replacement."
   });
 };
+
+exports.seedMenu = async (req, res) => {
+  console.log("🌱 [DIAGNOSTIC] Seeding Sample Menu Data...");
+  const sampleItems = [
+    { name: "Paneer Tikka", d_name: "पनीर टिक्का", price: 250, cat: "Starters", d_cat: "Starters", sub: "Veg Starters", d_sub: "व्हेज स्टार्टर्स", diet: "veg" },
+    { name: "Chicken Biryani", d_name: "चिकन बिर्याणी", price: 350, cat: "Main Menu", d_cat: "Main Menu", sub: "Non-Veg", d_sub: "नॉन-व्हेज", diet: "non-veg" },
+    { name: "Gulab Jamun", d_name: "गुलाब जामुन", price: 120, cat: "Desserts", d_cat: "Desserts", sub: "Sweets", d_sub: "मिठाई", diet: "veg" },
+    { name: "Cold Coffee", d_name: "कोल्ड कॉफी", price: 150, cat: "Drinks", d_cat: "Drinks", sub: "Beverages", d_sub: "पेय", diet: "veg" }
+  ];
+
+  try {
+    for (const item of sampleItems) {
+      const sql = "INSERT INTO menu_items (name, display_name, price, category, display_category, sub_category, display_sub_category, diet) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      await new Promise((resolve, reject) => {
+        db.query(sql, [item.name, item.d_name, item.price, item.cat, item.d_cat, item.sub, item.d_sub, item.diet], (err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+    }
+    res.json({ success: true, message: "Sample Menu Data seeded successfully! Please refresh your Menu page." });
+  } catch (err) {
+    console.error("❌ [SEED MENU ERROR]:", err.message);
+    res.status(500).json({ success: false, message: "Seeding failed", error: err.message });
+  }
+};
