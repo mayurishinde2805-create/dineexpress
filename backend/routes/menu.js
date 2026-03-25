@@ -4,6 +4,7 @@ const { getMenu, addMenuItem, updateMenuItem, deleteMenuItem } = require('../con
 const { adminAuth } = require('../middleware/authMiddleware');
 
 router.get('/all', getMenu);
+router.get('/debug-raw', menuController.debugRaw);
 router.post('/add', addMenuItem);
 router.post('/update', updateMenuItem);
 router.post('/delete', deleteMenuItem);
