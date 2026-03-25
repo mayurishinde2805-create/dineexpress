@@ -4,7 +4,7 @@ exports.getMenu = (req, res) => {
   const category = req.params.category || "All";
   const { lang } = req.query;
 
-  const sql = `SELECT id, 
+  let sql = `SELECT id, 
       COALESCE(name_mr, name) AS name, 
       COALESCE(description_mr, description) AS description,
       category AS category_en,
@@ -13,15 +13,21 @@ exports.getMenu = (req, res) => {
       COALESCE(sub_category_mr, sub_category) AS sub_category,
       price, image_url, diet, 
       COALESCE(variants_mr, variants) AS variants 
-      FROM menu_items 
-      WHERE (? = 'All' OR category = ?)`;
+      FROM menu_items`;
+  
+  let params = [];
+  if (category && category !== "All") {
+    sql += " WHERE category = ?";
+    params.push(category);
+  }
 
-  db.query(sql, [category, category], (err, result) => {
+  db.query(sql, params, (err, result) => {
     if (err) {
-      return res.status(500).json({ error: err.message, debug_sql: sql, params: [category] });
+      console.error("DB Query Error:", err);
+      return res.status(500).json({ error: err.message });
     }
-    // Return debug along with results to see what happened
-    res.json({ debug: { category, count: result.length, sql_tail: "WHERE (?='All' OR category=?)" }, result });
+    // Return result directly as an array (expect by frontend)
+    res.json(result);
   });
 };
 
