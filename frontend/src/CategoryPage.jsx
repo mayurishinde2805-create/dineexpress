@@ -52,7 +52,7 @@ export default function CategoryPage() {
         axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
             .then(res => {
                 const catLabel = (categoryMap[categoryName]?.label || "Starters").toLowerCase();
-                const allItems = res.data;
+                const allItems = Array.isArray(res.data) ? res.data : [];
 
                 const items = allItems.filter(item => {
                     const itemCat = (item.display_category || item.category || "").trim().toLowerCase();

@@ -53,7 +53,7 @@ export default function ItemsPage() {
         setLoading(true);
         axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
             .then(res => {
-                const fetchedItems = res.data;
+                const fetchedItems = Array.isArray(res.data) ? res.data : [];
                 
                 const filteredItems = fetchedItems.filter(item => {
                     const itemCat = (item.display_category || item.category || "").trim().toLowerCase();
@@ -87,7 +87,8 @@ export default function ItemsPage() {
         const cartId = vName ? `${item.id}-${vName}` : item.id;
 
         setCart(prev => {
-            const newQty = (prev[cartId]?.quantity || 0) + change;
+            const currentItem = prev[cartId] || {};
+            const newQty = (currentItem.quantity || 0) + change;
             let newCart = { ...prev };
 
             if (newQty <= 0) {
@@ -127,6 +128,8 @@ export default function ItemsPage() {
         return name.toLowerCase().includes(searchQuery.toLowerCase());
     });
 
+    const cartItemCount = Object.values(cart || {}).reduce((total, item) => total + (item?.quantity || 0), 0);
+
     return (
         <div className="items-v3-container">
             <header className="v2-header">
@@ -138,7 +141,7 @@ export default function ItemsPage() {
                 <div className="v2-header-actions">
                     <div className="loyalty-card-mini">🌟 {loyaltyPoints} Pts</div>
                     <div className="v2-cart-icon" onClick={() => navigate("/cart")}>
-                        🛍️ <span className="count">{Object.values(cart).reduce((a, b) => a + b.quantity, 0)}</span>
+                        🛍️ <span className="count">{cartItemCount}</span>
                     </div>
                 </div>
             </header>

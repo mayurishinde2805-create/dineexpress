@@ -40,7 +40,8 @@ export default function Menu() {
     axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
       .then(res => {
         const allowedCategories = ['Starters', 'Main Menu', 'Desserts', 'Drinks'];
-        const filteredData = res.data.filter(item => {
+        const data = Array.isArray(res.data) ? res.data : [];
+        const filteredData = data.filter(item => {
           const cat = (item.display_category || item.category || "").trim();
           return allowedCategories.some(allowed => allowed.toLowerCase() === cat.toLowerCase());
         });
@@ -76,7 +77,8 @@ export default function Menu() {
 
   const updateCart = (item, change) => {
     setCart(prev => {
-      const newQty = (prev[item.id]?.quantity || 0) + change;
+      const currentItem = prev[item.id] || {};
+      const newQty = (currentItem.quantity || 0) + change;
       let newCart = { ...prev };
       if (newQty <= 0) delete newCart[item.id];
       else {
@@ -100,6 +102,8 @@ export default function Menu() {
     return matchesCat && matchesSearch;
   });
 
+  const cartItemCount = Object.values(cart || {}).reduce((total, item) => total + (item?.quantity || 0), 0);
+
   return (
     <div className="menu-v2-container">
       {/* Header */}
@@ -108,7 +112,7 @@ export default function Menu() {
         <div className="v2-header-actions">
           <div className="loyalty-card-mini">🌟 {loyaltyPoints} Pts</div>
           <div className="v2-cart-icon" onClick={() => navigate("/cart")}>
-            🛍️ <span className="count">{Object.values(cart).reduce((a, b) => a + b.quantity, 0)}</span>
+            🛍️ <span className="count">{cartItemCount}</span>
           </div>
         </div>
       </header>
