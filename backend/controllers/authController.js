@@ -721,22 +721,12 @@ exports.seedMenu = async (req, res) => {
   }
 };
 
-// --- ULTIMATE PRODUCTION RESTORATION (MARATHI SUPPORT) ---
+// --- ULTIMATE PRODUCTION RESTORATION (PRE-TRANSLATED JSON) ---
 exports.restoreFullMenu = async (req, res) => {
-  console.log("🚀 [ULTIMATE RESTORATION] Restoring Full Menu from JSON with Marathi Support...");
+  console.log("🚀 [ULTIMATE RESTORATION] Starting High-Fidelity restoration from Localized JSON...");
   const fs = require('fs');
   const path = require('path');
   
-  const translationDict = {
-    "Starters": "स्टार्टर्स", "Main Menu": "मुख्य मेनू", "Desserts": "मिठाई", "Drinks": "पेय",
-    "Veg Starters": "व्हे़ज स्टार्टर्स", "Non-Veg Starters": "नॉन-व्हे़ज स्टार्टर्स",
-    "Indian": "भारतीय", "Chinese": "चायनीज", "Cakes": "केक", "Ice Cream": "आईस्क्रीम",
-    "Coffee": "कॉफी", "Tea": "चहा", "Soft Drinks": "कोल्ड ड्रिंक्स", "Mexican": "मेक्सिकन",
-    "Arabic": "अरबी", "Continental": "काेंटिनेंटल", "Fusion": "फ्यूजन"
-  };
-
-  const translate = (txt) => translationDict[txt] || txt;
-
   try {
     const dataPath = path.join(__dirname, '../full_menu_data.json');
     if (!fs.existsSync(dataPath)) {
@@ -745,6 +735,7 @@ exports.restoreFullMenu = async (req, res) => {
 
     const fullItems = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
+    // Step 1: Wipe existing menu
     await new Promise((resolve, reject) => {
       db.query("DELETE FROM menu_items", (err) => {
         if (err) reject(err);
@@ -752,18 +743,19 @@ exports.restoreFullMenu = async (req, res) => {
       });
     });
 
+    // Step 2: Mass Insertion from Pre-Translated JSON
     for (const i of fullItems) {
       const sql = `INSERT INTO menu_items 
-        (name, name_mr, category, category_mr, sub_category, sub_category_mr, price, diet, description, description_mr, image_url) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        (name, name_mr, name_hi, category, category_mr, category_hi, sub_category, sub_category_mr, sub_category_hi, price, diet, description, description_mr, description_hi, image_url) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
       await new Promise((resolve, reject) => {
         db.query(sql, [
-          i.name, translate(i.name), 
-          i.category, translate(i.category), 
-          i.sub_category, translate(i.sub_category), 
+          i.name, i.name_mr, i.name_hi || i.name, 
+          i.category, i.category_mr, i.category_hi || i.category, 
+          i.sub_category, i.sub_category_mr, i.sub_category_hi || i.sub_category, 
           i.price, i.diet || "veg", 
-          i.description || i.name, translate(i.description || i.name),
+          i.description || i.name, i.description_mr || i.name_mr, i.description_hi || i.name_hi || i.name,
           i.image_url || null
         ], (err) => {
           if (err) reject(err);
@@ -772,7 +764,7 @@ exports.restoreFullMenu = async (req, res) => {
       });
     }
 
-    res.json({ success: true, message: "ULTIMATE MENU RESTORATION COMPLETE!", count: fullItems.length });
+    res.json({ success: true, message: "ULTIMATE FULL RESTORATION COMPLETE!", count: fullItems.length });
   } catch (err) {
     console.error("❌ [RESTORE ERROR]:", err.message);
     res.status(500).json({ success: false, message: "Restoration failed", error: err.message });
