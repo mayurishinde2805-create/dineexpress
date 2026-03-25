@@ -30,6 +30,15 @@ app.use(express.json());
 // Health Check Routes
 app.get("/", (req, res) => res.send("DineExpress Backend is LIVE 🚀"));
 app.get("/test", (req, res) => res.send("Test route working!"));
+// --- TEMPORARY DIAGNOSTIC ROUTE ---
+app.get("/api/check-raw", (req, res) => {
+  const db = require('./config/db');
+  db.query("SELECT COUNT(*) as count FROM menu_items", (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ table: "menu_items", result });
+  });
+});
+
 
 // Basic request logging for debugging missing images
 app.use((req, res, next) => {
