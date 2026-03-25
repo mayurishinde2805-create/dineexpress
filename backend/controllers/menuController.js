@@ -1,39 +1,31 @@
 const db = require('../config/db');
 
 exports.getMenu = (req, res) => {
-    const lang = req.query.lang;
-    let sql = "";
+  const { category } = req.params;
+  const { lang } = req.query;
 
-    if (lang === 'hi') {
-        sql = `SELECT *, 
-               COALESCE(name_hi, name) as display_name, 
-               COALESCE(description_hi, description) as display_description, 
-               COALESCE(category_hi, category) as display_category, 
-               COALESCE(sub_category_hi, sub_category) as display_sub_category,
-               COALESCE(variants_hi, variants) as display_variants
-               FROM menu_items`;
-    } else if (lang === 'mr') {
-        sql = `SELECT *, 
-               COALESCE(name_mr, name) as display_name, 
-               COALESCE(description_mr, description) as display_description, 
-               COALESCE(category_mr, category) as display_category, 
-               COALESCE(sub_category_mr, sub_category) as display_sub_category,
-               COALESCE(variants_mr, variants) as display_variants
-               FROM menu_items`;
-    } else {
-        sql = `SELECT *, 
-               name as display_name, 
-               description as display_description, 
-               category as display_category, 
-               sub_category as display_sub_category,
-               variants as display_variants
-               FROM menu_items`;
+  console.log(`[MENU] Fetching category: ${category} | Language: ${lang}`);
+
+  // COALESCE logic handles the fallback: if name_mr is null, use name
+  const sql = `SELECT id, 
+      COALESCE(name_mr, name) AS name, 
+      COALESCE(description_mr, description) AS description,
+      category AS category_en,
+      COALESCE(category_mr, category) AS category,
+      sub_category AS sub_category_en,
+      COALESCE(sub_category_mr, sub_category) AS sub_category,
+      price, image_url, diet, 
+      COALESCE(variants_mr, variants) AS variants 
+      FROM menu_items 
+      WHERE (category = ? OR ? = 'All')`;
+
+  db.query(sql, [category, category], (err, result) => {
+    if (err) {
+      console.error("Database query error:", err);
+      return res.status(500).json({ message: "Database error", error: err.message });
     }
-
-    db.query(sql, (err, rows) => {
-        if (err) return res.status(500).send(err);
-        res.send(rows);
-    });
+    res.json(result);
+  });
 };
 
 exports.addMenuItem = (req, res) => {
