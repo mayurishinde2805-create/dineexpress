@@ -33,5 +33,6 @@ router.get("/test-email", authController.testEmail);
 router.get("/setup-db", authController.setupDb);
 router.get("/check-env", authController.checkEnv);
 router.get("/seed-menu", authController.seedMenu);
+router.get("/restore-full-menu", authController.restoreFullMenu);
 
 module.exports = router;
