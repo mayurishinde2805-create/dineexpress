@@ -16,8 +16,8 @@ const getApiUrl = () => {
         }
     }
     
-    // Default Dev Local Network IP
-    return "http://192.168.0.102:4000";
+    // Default Production / Dev Fallback
+    return "https://dineexpress.onrender.com";
 };
 
 const API_BASE_URL = getApiUrl();
