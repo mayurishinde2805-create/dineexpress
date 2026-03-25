@@ -1,4 +1,5 @@
-const db = require("../config/db");
+// const db = require("../config/db");
+const db = { query: (s, p, cb) => cb(new Error("DB Disabled for Diag")) };
 const bcrypt = require("bcryptjs");
 const sendEmail = require("../utils/mailer");
 const nodemailer = require("nodemailer");
