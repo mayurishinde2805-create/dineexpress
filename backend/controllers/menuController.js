@@ -1,11 +1,8 @@
 const db = require('../config/db');
 
 exports.getMenu = (req, res) => {
-  // Fix: Default to "All" if category param is missing (for /api/menu/all)
   const category = req.params.category || "All";
   const { lang } = req.query;
-
-  console.log(`[MENU] Fetching category: ${category} | Language: ${lang}`);
 
   const sql = `SELECT id, 
       COALESCE(name_mr, name) AS name, 
@@ -17,14 +14,14 @@ exports.getMenu = (req, res) => {
       price, image_url, diet, 
       COALESCE(variants_mr, variants) AS variants 
       FROM menu_items 
-      WHERE (category = ? OR ? = 'All')`;
+      WHERE (? = 'All' OR category = ?)`;
 
   db.query(sql, [category, category], (err, result) => {
     if (err) {
-      console.error("Database query error:", err);
-      return res.status(500).json({ message: "Database error", error: err.message });
+      return res.status(500).json({ error: err.message, debug_sql: sql, params: [category] });
     }
-    res.json(result);
+    // Return debug along with results to see what happened
+    res.json({ debug: { category, count: result.length, sql_tail: "WHERE (?='All' OR category=?)" }, result });
   });
 };
 
