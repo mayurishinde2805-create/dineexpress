@@ -8,7 +8,7 @@ import API_BASE_URL from "./apiConfig";
 
 export default function Home() {
     const navigate = useNavigate();
-    const { t } = useLanguage();
+    const { t, language, changeLanguage } = useLanguage();
 
     const categories = [
         {
@@ -47,6 +47,15 @@ export default function Home() {
             <header className="home-header-v2">
                 <div className="v2-brand">DineExpress <span>Premium</span></div>
                 <div className="v2-actions">
+                    <select
+                        value={language}
+                        onChange={(e) => changeLanguage(e.target.value)}
+                        className="lang-select-pill"
+                    >
+                        <option value="en">EN</option>
+                        <option value="hi">HI</option>
+                        <option value="mr">MR</option>
+                    </select>
                     <button className="dashboard-pill" onClick={() => navigate("/customer/dashboard")}>👤 {t("dashboard")}</button>
                 </div>
             </header>
