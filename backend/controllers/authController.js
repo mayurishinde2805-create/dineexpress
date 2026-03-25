@@ -723,47 +723,28 @@ exports.seedMenu = async (req, res) => {
 
 // --- ULTIMATE PRODUCTION RESTORATION (MARATHI SUPPORT) ---
 exports.restoreFullMenu = async (req, res) => {
-  console.log("🚀 [ULTIMATE RESTORATION] Restoring Full Menu with Marathi Translations...");
+  console.log("🚀 [ULTIMATE RESTORATION] Restoring Full Menu from JSON with Marathi Support...");
+  const fs = require('fs');
+  const path = require('path');
   
   const translationDict = {
     "Starters": "स्टार्टर्स", "Main Menu": "मुख्य मेनू", "Desserts": "मिठाई", "Drinks": "पेय",
     "Veg Starters": "व्हे़ज स्टार्टर्स", "Non-Veg Starters": "नॉन-व्हे़ज स्टार्टर्स",
     "Indian": "भारतीय", "Chinese": "चायनीज", "Cakes": "केक", "Ice Cream": "आईस्क्रीम",
-    "Coffee": "कॉफी", "Tea": "चहा", "Soft Drinks": "कोल्ड ड्रिंक्स"
+    "Coffee": "कॉफी", "Tea": "चहा", "Soft Drinks": "कोल्ड ड्रिंक्स", "Mexican": "मेक्सिकन",
+    "Arabic": "अरबी", "Continental": "काेंटिनेंटल", "Fusion": "फ्यूजन"
   };
 
   const translate = (txt) => translationDict[txt] || txt;
 
-  const fullItems = [
-    { name: "Veg Spring Rolls", cat: "Starters", sub: "Veg Starters", p: 180, d: "veg" },
-    { name: "Paneer Tikka", cat: "Starters", sub: "Veg Starters", p: 240, d: "veg" },
-    { name: "Veg Manchurian", cat: "Starters", sub: "Veg Starters", p: 190, d: "veg" },
-    { name: "Crispy Corn", cat: "Starters", sub: "Veg Starters", p: 170, d: "veg" },
-    { name: "Chicken Tikka", cat: "Starters", sub: "Non-Veg Starters", p: 280, d: "non-veg" },
-    { name: "Chicken 65", cat: "Starters", sub: "Non-Veg Starters", p: 260, d: "non-veg" },
-    { name: "Chicken Lollipop", cat: "Starters", sub: "Non-Veg Starters", p: 270, d: "non-veg" },
-    { name: "Fish Fingers", cat: "Starters", sub: "Non-Veg Starters", p: 320, d: "non-veg" },
-    { name: "Paneer Butter Masala", cat: "Main Menu", sub: "Indian", p: 280, d: "veg" },
-    { name: "Dal Makhani", cat: "Main Menu", sub: "Indian", p: 220, d: "veg" },
-    { name: "Chicken Biryani", cat: "Main Menu", sub: "Indian", p: 320, d: "non-veg" },
-    { name: "Butter Chicken", cat: "Main Menu", sub: "North Indian", p: 350, d: "non-veg" },
-    { name: "Chole Bhature", cat: "Main Menu", sub: "North Indian", p: 180, d: "veg" },
-    { name: "Veg Hakka Noodles", cat: "Main Menu", sub: "Chinese", p: 220, d: "veg" },
-    { name: "Schezwan Fried Rice", cat: "Main Menu", sub: "Chinese", p: 240, d: "veg" },
-    { name: "Chocolate Cake", cat: "Desserts", sub: "Cakes", p: 450, d: "veg" },
-    { name: "Red Velvet Cake", cat: "Desserts", sub: "Cakes", p: 520, d: "veg" },
-    { name: "Chocolate Brownie", cat: "Desserts", sub: "Brownies", p: 120, d: "veg" },
-    { name: "Vanilla Ice Cream", cat: "Desserts", sub: "Ice Cream", p: 80, d: "veg" },
-    { name: "Gulab Jamun", cat: "Desserts", sub: "Indian Sweets", p: 100, d: "veg" },
-    { name: "Masala Tea", cat: "Drinks", sub: "Tea", p: 60, d: "veg" },
-    { name: "Cold Coffee", cat: "Drinks", sub: "Coffee", p: 140, d: "veg" },
-    { name: "Virgin Mojito", cat: "Drinks", sub: "Mocktails", p: 150, d: "veg" },
-    { name: "Orange Juice", cat: "Drinks", sub: "Juices", p: 100, d: "veg" },
-    { name: "Sweet Lassi", cat: "Drinks", sub: "Traditional", p: 80, d: "veg" },
-    { name: "Coke", cat: "Drinks", sub: "Soft Drinks", p: 50, d: "veg" }
-  ];
-
   try {
+    const dataPath = path.join(__dirname, '../full_menu_data.json');
+    if (!fs.existsSync(dataPath)) {
+      return res.status(404).json({ success: false, message: "Restoration data file not found on server." });
+    }
+
+    const fullItems = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+
     await new Promise((resolve, reject) => {
       db.query("DELETE FROM menu_items", (err) => {
         if (err) reject(err);
@@ -773,16 +754,17 @@ exports.restoreFullMenu = async (req, res) => {
 
     for (const i of fullItems) {
       const sql = `INSERT INTO menu_items 
-        (name, name_mr, category, category_mr, sub_category, sub_category_mr, price, diet, description, description_mr) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        (name, name_mr, category, category_mr, sub_category, sub_category_mr, price, diet, description, description_mr, image_url) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       
       await new Promise((resolve, reject) => {
         db.query(sql, [
           i.name, translate(i.name), 
-          i.cat, translate(i.cat), 
-          i.sub, translate(i.sub), 
-          i.p, i.d, 
-          i.name, translate(i.name)
+          i.category, translate(i.category), 
+          i.sub_category, translate(i.sub_category), 
+          i.price, i.diet || "veg", 
+          i.description || i.name, translate(i.description || i.name),
+          i.image_url || null
         ], (err) => {
           if (err) reject(err);
           else resolve();
@@ -790,7 +772,7 @@ exports.restoreFullMenu = async (req, res) => {
       });
     }
 
-    res.json({ success: true, message: "FULL PRODUCTION MENU RESTORED!", count: fullItems.length });
+    res.json({ success: true, message: "ULTIMATE MENU RESTORATION COMPLETE!", count: fullItems.length });
   } catch (err) {
     console.error("❌ [RESTORE ERROR]:", err.message);
     res.status(500).json({ success: false, message: "Restoration failed", error: err.message });
