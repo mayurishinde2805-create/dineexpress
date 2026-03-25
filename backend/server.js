@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // 🧪 EMERGENCY DIAGNOSTIC ROUTES (TOP PRIORITY)
-app.get("/", (req, res) => res.send("DineExpress Emergency Backend v2 🚀"));
+app.get("/", (req, res) => res.send("DineExpress Emergency Backend v2 [Build:1774470056681] 🚀"));
 app.get("/api/ping", (req, res) => res.json({ status: "alive" }));
 
 // 📦 ROUTE IMPORTS
