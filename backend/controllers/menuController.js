@@ -1,12 +1,12 @@
 const db = require('../config/db');
 
 exports.getMenu = (req, res) => {
-  const { category } = req.params;
+  // Fix: Default to "All" if category param is missing (for /api/menu/all)
+  const category = req.params.category || "All";
   const { lang } = req.query;
 
   console.log(`[MENU] Fetching category: ${category} | Language: ${lang}`);
 
-  // COALESCE logic handles the fallback: if name_mr is null, use name
   const sql = `SELECT id, 
       COALESCE(name_mr, name) AS name, 
       COALESCE(description_mr, description) AS description,
