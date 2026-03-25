@@ -607,21 +607,27 @@ exports.setupDb = async (req, res) => {
       expires_at DATETIME,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`,
-    `CREATE TABLE IF NOT EXISTS menu_items (
+    `DROP TABLE IF EXISTS menu_items`,
+    `CREATE TABLE menu_items (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255),
-      display_name VARCHAR(255),
+      name_mr VARCHAR(255),
+      name_hi VARCHAR(255),
       description TEXT,
-      display_description TEXT,
+      description_mr TEXT,
+      description_hi TEXT,
       price DECIMAL(10,2),
       category VARCHAR(100),
-      display_category VARCHAR(100),
+      category_mr VARCHAR(100),
+      category_hi VARCHAR(100),
       sub_category VARCHAR(100),
-      display_sub_category VARCHAR(100),
+      sub_category_mr VARCHAR(100),
+      sub_category_hi VARCHAR(100),
       image_url VARCHAR(255),
       diet ENUM('veg', 'non-veg', 'egg'),
       variants TEXT,
-      display_variants TEXT,
+      variants_mr TEXT,
+      variants_hi TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE IF NOT EXISTS orders (
