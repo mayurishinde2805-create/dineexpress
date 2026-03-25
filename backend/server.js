@@ -28,7 +28,7 @@ app.use(cors());
 app.use(express.json());
 
 // Health Check Routes
-app.get("/", (req, res) => res.send("DineExpress Backend is LIVE 🚀"));
+app.get("/", (req, res) => res.send("DineExpress Backend is LIVE v1774468745702 🚀"));
 app.get("/test", (req, res) => res.send("Test route working!"));
 // --- TEMPORARY DIAGNOSTIC ROUTE ---
 app.get("/api/check-raw", (req, res) => {
