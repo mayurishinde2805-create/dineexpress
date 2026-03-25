@@ -1,18 +1,38 @@
 const db = require('../config/db');
 
 exports.getMenu = (req, res) => {
+  const { lang } = req.query; // 'en', 'mr', 'hi'
   const category = req.params.category || "All";
-  const { lang } = req.query;
 
-  let sql = `SELECT id, 
-      COALESCE(name_mr, name) AS name, 
-      COALESCE(description_mr, description) AS description,
+  // Dynamic Column Selection based on Language
+  let nameCol = "name";
+  let descCol = "description";
+  let catDisplayCol = "category";
+  let subCatDisplayCol = "sub_category";
+  let variantsCol = "variants";
+
+  if (lang === 'mr') {
+    nameCol = "COALESCE(name_mr, name)";
+    descCol = "COALESCE(description_mr, description)";
+    catDisplayCol = "COALESCE(category_mr, category)";
+    subCatDisplayCol = "COALESCE(sub_category_mr, sub_category)";
+    variantsCol = "COALESCE(variants_mr, variants)";
+  } else if (lang === 'hi') {
+    nameCol = "COALESCE(name_hi, name)";
+    descCol = "COALESCE(description_hi, description)";
+    catDisplayCol = "COALESCE(category_hi, category)";
+    subCatDisplayCol = "COALESCE(sub_category_hi, sub_category)";
+    variantsCol = "COALESCE(variants_hi, variants)";
+  }
+
+  let sql = `SELECT id, price, image_url, diet,
+      ${nameCol} AS name,
+      ${descCol} AS description,
       category AS category_en,
-      COALESCE(category_mr, category) AS category,
+      ${catDisplayCol} AS category,
       sub_category AS sub_category_en,
-      COALESCE(sub_category_mr, sub_category) AS sub_category,
-      price, image_url, diet, 
-      COALESCE(variants_mr, variants) AS variants 
+      ${subCatDisplayCol} AS sub_category,
+      ${variantsCol} AS variants 
       FROM menu_items`;
   
   let params = [];
@@ -26,7 +46,6 @@ exports.getMenu = (req, res) => {
       console.error("DB Query Error:", err);
       return res.status(500).json({ error: err.message });
     }
-    // Return result directly as an array (expect by frontend)
     res.json(result);
   });
 };
