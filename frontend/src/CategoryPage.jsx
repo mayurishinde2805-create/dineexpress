@@ -55,7 +55,7 @@ export default function CategoryPage() {
                 const allItems = Array.isArray(res.data) ? res.data : [];
 
                 const items = allItems.filter(item => {
-                    const itemCat = (item.display_category || item.category || "").trim().toLowerCase();
+                    const itemCat = (item.category_en || item.category || "").trim().toLowerCase();
                     // Match if itemCat is same, or if one is singular/plural variant
                     return itemCat === catLabel || 
                            itemCat.includes(catLabel.slice(0,-1)) || 
@@ -68,8 +68,8 @@ export default function CategoryPage() {
                     const subKey = item.sub_category || "General";
                     if (!subsMap.has(subKey)) {
                         subsMap.set(subKey, {
-                            original: subKey,
-                            display: item.display_sub_category || subKey
+                            original: item.sub_category_en || subKey,
+                            display: item.sub_category || subKey
                         });
                     }
                 });

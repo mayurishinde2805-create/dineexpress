@@ -42,7 +42,7 @@ export default function Menu() {
         const allowedCategories = ['Starters', 'Main Menu', 'Desserts', 'Drinks'];
         const data = Array.isArray(res.data) ? res.data : [];
         const filteredData = data.filter(item => {
-          const cat = (item.display_category || item.category || "").trim();
+          const cat = (item.category_en || item.category || "").trim();
           return allowedCategories.some(allowed => allowed.toLowerCase() === cat.toLowerCase());
         });
         setMenuItems(filteredData);
