@@ -4,13 +4,16 @@ const cors = require("cors");
 const http = require("http");
 const path = require("path");
 
-const app = express();
-const server = http.createServer(app);
-
+const traces = [];
 app.use((req, res, next) => {
-  console.log(`[TRACE] ${req.method} ${req.url}`);
+  const logMsg = `[${new Date().toISOString()}] ${req.method} ${req.url}`;
+  traces.push(logMsg);
+  if (traces.length > 20) traces.shift();
+  console.log(logMsg);
   next();
 });
+
+app.get("/api/trace-log", (req, res) => res.json(traces));
 
 app.use(cors());
 app.use(express.json());
