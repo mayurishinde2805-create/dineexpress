@@ -107,8 +107,9 @@ export default function PaymentPage() {
 
                 // 2. Open Razorpay Popup
                 const options = {
-                    key: "rzp_test_zM7N1jN6rXU4zD", // Use exactly the backend test key if env fails
+                    key: process.env.REACT_APP_RAZORPAY_KEY || "", 
                     amount: res.data.amount,
+
                     currency: res.data.currency,
                     name: "DineExpress",
                     description: "Table 1 Online Payment",

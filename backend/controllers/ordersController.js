@@ -4,8 +4,8 @@ const Razorpay = require('razorpay');
 
 // Fallback logic inside the instance creation
 const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_zM7N1jN6rXU4zD',
-    key_secret: process.env.RAZORPAY_KEY_SECRET || 'qL0oU4tP9yJ8tB7vY6xH2gM5'
+    key_id: process.env.RAZORPAY_KEY_ID || "",
+    key_secret: process.env.RAZORPAY_KEY_SECRET || ""
 });
 
 // 1. PLACE ORDER
@@ -103,7 +103,7 @@ exports.verifyPayment = (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature, dbOrderId } = req.body;
 
     const crypto = require('crypto');
-    const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET || 'YourSecretKeyHere');
+    const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET || '');
 
     hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
     const generated_signature = hmac.digest('hex');
@@ -156,9 +156,6 @@ exports.confirmCashPayment = (req, res) => {
 
 // Helper: Get Name Column based on Lang
 const getNameCol = (lang) => {
-    // If name_hi/mr is NULL (no translation) OR m.name is NULL (item deleted), provide fallback
-    // We use LEFT JOIN, so m.name could be NULL.
-    // Logic: If translation exists, use it. Else if English name exists, use it. Else 'Unknown Item'.
     if (lang === 'hi') return "COALESCE(m.name_hi, m.name, 'Unknown Item')";
     if (lang === 'mr') return "COALESCE(m.name_mr, m.name, 'Unknown Item')";
     return "COALESCE(m.name, 'Unknown Item')";
@@ -249,7 +246,6 @@ exports.updateOrderStatus = (req, res) => {
 exports.cancelOrder = (req, res) => {
     const { id } = req.params;
 
-    // Check status first - only allow cancellation if not yet Preparing
     const checkSql = "SELECT order_status FROM orders WHERE id = ?";
     db.query(checkSql, [id], (err, results) => {
         if (err) return res.status(500).json({ message: "DB Error" });

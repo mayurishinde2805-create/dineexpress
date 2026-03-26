@@ -17,7 +17,8 @@ const getApiUrl = () => {
     }
     
     // Default Production / Dev Fallback
-    return "https://dineexpress.onrender.com";
+    return "https://dineexpress-backend.onrender.com";
+
 };
 
 const API_BASE_URL = getApiUrl();
