@@ -10,7 +10,7 @@ export default function Cart() {
     const [cart, setCart] = useState({});
 
     useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem("cart")) || {};
+        const savedCart = ( (() => { try { const val = localStorage.getItem("cart"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || {};
         setCart(savedCart);
     }, []);
 

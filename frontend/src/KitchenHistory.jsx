@@ -1,9 +1,10 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "./kitchenDashboard.css";
 
-const socket = io("http://192.168.1.113:4000");
+const socket = io(API_BASE_URL);
 
 export default function KitchenHistory() {
     const [orders, setOrders] = useState([]);
@@ -17,7 +18,7 @@ export default function KitchenHistory() {
 
     const fetchHistory = async () => {
         try {
-            const res = await axios.get("http://192.168.1.113:4000/api/orders");
+            const res = await axios.get(API_BASE_URL + "/api/orders");
             // For history, show Served or Cancelled.
             const history = res.data.filter(o =>
                 o.status === "Served" || o.status === "Cancelled"

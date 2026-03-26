@@ -7,24 +7,11 @@ const path = require("path");
 const app = express();
 const server = http.createServer(app);
 
-const traces = [];
-app.use((req, res, next) => {
-  const logMsg = `[${new Date().toISOString()}] ${req.method} ${req.url}`;
-  traces.push(logMsg);
-  if (traces.length > 20) traces.shift();
-  console.log(logMsg);
-  next();
-});
-
-app.get("/api/trace-log", (req, res) => res.json(traces));
-
 app.use(cors());
 app.use(express.json());
 
-// 🧪 EMERGENCY DIAGNOSTIC ROUTES (TOP PRIORITY)
-app.get("/", (req, res) => res.send("DineExpress Emergency Backend v3 PRO 🚀"));
-app.get("/api/ping", (req, res) => res.json({ status: "alive" }));
-app.get("/ping", (req, res) => res.send("pong"));
+// 🚀 DineExpress Production Backend
+app.get("/", (req, res) => res.send("DineExpress Backend is LIVE [Asset Sync v1] 🚀"));
 
 // 📦 ROUTE IMPORTS
 const authRoutes = require('./routes/auth');
@@ -34,11 +21,11 @@ const menuRoutes = require('./routes/menu');
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 
-// 📂 STATIC FILES
-app.use('/images', express.static(path.join(__dirname, '../frontend/public/images')));
-app.use('/models', express.static(path.join(__dirname, '../frontend/public/models')));
+// 📂 STATIC FILES (Consolidated in backend/public for Render)
+app.use('/images', cors(), express.static(path.join(__dirname, 'public/images')));
+app.use('/models', cors(), express.static(path.join(__dirname, 'public/models')));
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
-  console.log(`🚀 Emergency Server on port ${PORT}`);
+  console.log(`🚀 DineExpress Server on port ${PORT}`);
 });

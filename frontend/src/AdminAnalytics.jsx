@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -28,16 +29,16 @@ export default function AdminAnalytics() {
 
     const fetchAnalytics = async () => {
         try {
-            const salesRes = await axios.get(`http://192.168.1.113:4000/api/admin/analytics/sales?period=${period}`);
+            const salesRes = await axios.get(`${API_BASE_URL}/api/admin/analytics/sales?period=${period}`);
             setSalesData(salesRes.data || []);
 
-            const itemsRes = await axios.get("http://192.168.1.113:4000/api/admin/analytics/popular");
+            const itemsRes = await axios.get(API_BASE_URL + "/api/admin/analytics/popular");
             setPopularItems(itemsRes.data || []);
 
-            const dietRes = await axios.get("http://192.168.1.113:4000/api/admin/analytics/diet");
+            const dietRes = await axios.get(API_BASE_URL + "/api/admin/analytics/diet");
             setDietData(dietRes.data || []);
 
-            const statusRes = await axios.get("http://192.168.1.113:4000/api/admin/analytics/status");
+            const statusRes = await axios.get(API_BASE_URL + "/api/admin/analytics/status");
             setStatusData(statusRes.data || []);
         } catch (err) {
             console.error("Analytics fetch error", err);

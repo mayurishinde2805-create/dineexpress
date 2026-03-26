@@ -24,7 +24,7 @@ export default function Menu() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart") || "{}"));
+  const [cart, setCart] = useState(() => ( (() => { try { return ( (() => { try { const val = localStorage.getItem("cart"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || JSON.parse("{}"); } catch(e) { return JSON.parse("{}"); } })() ));
   const [activeOrder, setActiveOrder] = useState(null);
   const [tableNo] = useState(1);
   const [loyaltyPoints] = useState(1250);
@@ -34,7 +34,7 @@ export default function Menu() {
 
   // --- EFFECTS ---
   useEffect(() => {
-    const savedOrder = JSON.parse(localStorage.getItem("activeOrder"));
+    const savedOrder = ( (() => { try { const val = localStorage.getItem("activeOrder"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() );
     if (savedOrder) setActiveOrder(savedOrder);
 
     axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })

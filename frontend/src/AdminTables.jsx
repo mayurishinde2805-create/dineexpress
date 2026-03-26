@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
@@ -19,7 +20,7 @@ export default function AdminTables() {
 
     const fetchTables = async () => {
         try {
-            const res = await axios.get("http://192.168.1.113:4000/api/tables");
+            const res = await axios.get(API_BASE_URL + "/api/tables");
             setTables(res.data);
         } catch (err) {
             console.error("Error fetching tables:", err);
@@ -54,7 +55,7 @@ export default function AdminTables() {
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this table?")) {
             try {
-                await axios.delete(`http://192.168.1.113:4000/api/tables/${id}`);
+                await axios.delete(`${API_BASE_URL}/api/tables/${id}`);
                 fetchTables();
             } catch (err) {
                 console.error("Error deleting table:", err);
@@ -67,11 +68,11 @@ export default function AdminTables() {
         e.preventDefault();
         try {
             if (editingTable) {
-                await axios.put(`http://192.168.1.113:4000/api/tables/${editingTable.id}/status`, {
+                await axios.put(`${API_BASE_URL}/api/tables/${editingTable.id}/status`, {
                     status: formData.status
                 });
             } else {
-                await axios.post("http://192.168.1.113:4000/api/tables", {
+                await axios.post(API_BASE_URL + "/api/tables", {
                     table_number: formData.table_number,
                     capacity: formData.capacity
                 });
@@ -95,7 +96,7 @@ export default function AdminTables() {
 
     const resetTable = async (tableId) => {
         try {
-            await axios.put(`http://192.168.1.113:4000/api/tables/${tableId}/status`, {
+            await axios.put(`${API_BASE_URL}/api/tables/${tableId}/status`, {
                 status: "available"
             });
             fetchTables();

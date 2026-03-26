@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,7 +7,7 @@ import "./orderStatus.css";
 import { useLanguage } from "./context/LanguageContext";
 import bg from "./assets/bg.jpg";
 
-const socket = io("http://192.168.1.113:4000");
+const socket = io(API_BASE_URL);
 
 export default function OrderSuccess() {
     const { state } = useLocation();
@@ -23,10 +24,10 @@ export default function OrderSuccess() {
 
     useEffect(() => {
         const fetchOrder = () => {
-            const user = JSON.parse(localStorage.getItem("user"));
+            const user = ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() );
             const userId = user ? user.id : 1;
 
-            axios.get(`http://192.168.1.113:4000/api/orders/user/${userId}`)
+            axios.get(`${API_BASE_URL}/api/orders/user/${userId}`)
                 .then(res => {
                     const allOrders = res.data;
                     if (state?.orderId) {
@@ -86,8 +87,8 @@ export default function OrderSuccess() {
             alert(t("alert_rate") || "Please select a rating! ⭐");
             return;
         }
-        const user = JSON.parse(localStorage.getItem("user"));
-        axios.post("http://192.168.1.113:4000/api/feedback/submit", {
+        const user = ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() );
+        axios.post(API_BASE_URL + "/api/feedback/submit", {
             order_id: order.id,
             user_id: user ? user.id : 1,
             rating,

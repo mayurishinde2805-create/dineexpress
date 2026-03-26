@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 export default function ProtectedRoute({ children, role }) {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = ( (() => { try { const val = localStorage.getItem('user'); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() );
     const userRole = localStorage.getItem('role');
 
     // 1. Not Logged In

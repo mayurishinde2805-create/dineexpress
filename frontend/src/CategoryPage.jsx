@@ -43,8 +43,16 @@ export default function CategoryPage() {
     const getFullImageUrl = (path) => {
         if (!path) return "https://source.unsplash.com/400x300/?food";
         if (path.startsWith('http')) return path;
-        const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-        return `${API_BASE_URL}${normalizedPath}`;
+        
+        // Correctly prefix with /images/ for our static assets
+        const normalizedPath = path.startsWith('/') ? path : `/images/${path}`;
+        
+        // If the path already includes /images, don't double it
+        const finalPath = normalizedPath.includes('/images/images/') 
+            ? normalizedPath.replace('/images/images/', '/images/') 
+            : normalizedPath;
+
+        return `${API_BASE_URL}${finalPath}`;
     };
 
     useEffect(() => {
@@ -120,8 +128,8 @@ export default function CategoryPage() {
                         <div className="v2-empty">{t("no_sub_categories")}</div>
                     ) : (
                         subCategories.map((sub, idx) => {
-                            // Find an item sample for image
-                            const subItem = menuItems.find(i => i.sub_category === sub.original && i.image_url);
+                            // Find an item sample for image - Use stable English identifier for the match
+                            const subItem = menuItems.find(i => (i.sub_category_en || i.sub_category) === sub.original && i.image_url);
                             const bgImage = subItem ? subItem.image_url : currentCatInfo.img;
 
                             return (

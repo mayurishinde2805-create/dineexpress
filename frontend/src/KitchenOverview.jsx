@@ -1,9 +1,10 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "./kitchenDashboard.css";
 
-const socket = io("http://192.168.1.113:4000");
+const socket = io(API_BASE_URL);
 
 export default function KitchenOverview() {
     const [orders, setOrders] = useState([]);
@@ -40,7 +41,7 @@ export default function KitchenOverview() {
 
     const fetchActiveOrders = async () => {
         try {
-            const res = await axios.get("http://192.168.1.113:4000/api/orders/kitchen");
+            const res = await axios.get(API_BASE_URL + "/api/orders/kitchen");
             const activeOnly = res.data.filter(o => (o.status || "").toLowerCase() !== "served");
             setOrders(activeOnly);
         } catch (err) {
@@ -50,7 +51,7 @@ export default function KitchenOverview() {
 
     const fetchWaiterRequests = async () => {
         try {
-            const res = await axios.get("http://192.168.1.113:4000/api/waiter-requests");
+            const res = await axios.get(API_BASE_URL + "/api/waiter-requests");
             setWaiterAlerts(res.data);
         } catch (err) {
             console.error("Error fetching waiter requests:", err);
@@ -59,7 +60,7 @@ export default function KitchenOverview() {
 
     const updateStatus = async (orderId, newStatus) => {
         try {
-            await axios.put(`http://192.168.1.113:4000/api/orders/${orderId}/status`, {
+            await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, {
                 status: newStatus,
             });
             fetchActiveOrders();
@@ -70,7 +71,7 @@ export default function KitchenOverview() {
 
     const resolveAlert = async (id) => {
         try {
-            await axios.put(`http://192.168.1.113:4000/api/waiter-requests/${id}/resolve`);
+            await axios.put(`${API_BASE_URL}/api/waiter-requests/${id}/resolve`);
             // Optimistic update
             setWaiterAlerts(prev => prev.filter(alert => alert.id !== id));
         } catch (err) {

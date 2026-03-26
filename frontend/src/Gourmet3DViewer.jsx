@@ -15,25 +15,35 @@ const Gourmet3DViewer = ({ image, itemName }) => {
 
         const loadDepth = async () => {
             try {
-                // Create a temporary image element to load the source
-                const img = new Image();
-                img.crossOrigin = "anonymous";
-
                 // Construct URL
                 const src = image.image_url.startsWith('http')
                     ? image.image_url
-                    : `${API_BASE_URL}${image.image_url.startsWith('/') ? '' : '/'}${image.image_url}`;
+                    : `${API_BASE_URL}/images/${image.image_url.startsWith('/') ? image.image_url.slice(1) : image.image_url}?v=${Date.now()}`;
 
-                img.src = src;
+                // Use fetch instead of Image tag for better CORS handling
+                const response = await fetch(src);
+                if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to fetch image`);
+                
+                const blob = await response.blob();
+                const objectURL = URL.createObjectURL(blob);
+
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.src = objectURL;
 
                 await new Promise((resolve, reject) => {
                     img.onload = resolve;
-                    img.onerror = () => reject(new Error("Failed to load image for 3D processing"));
+                    img.onerror = () => reject(new Error(`Failed to process bitmap for: ${image.image_url}`));
                 });
 
-                if (isCancelled) return;
+                if (isCancelled) {
+                    URL.revokeObjectURL(objectURL);
+                    return;
+                }
 
                 const canvas = await generateDepthMapCanvas(img);
+                URL.revokeObjectURL(objectURL);
+
                 if (!isCancelled) {
                     setDepthCanvas(canvas);
                     setLoading(false);

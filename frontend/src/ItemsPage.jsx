@@ -20,7 +20,7 @@ export default function ItemsPage() {
 
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart") || "{}"));
+    const [cart, setCart] = useState(() => ( (() => { try { return ( (() => { try { const val = localStorage.getItem("cart"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || JSON.parse("{}"); } catch(e) { return JSON.parse("{}"); } })() ));
     const [selectedVariants, setSelectedVariants] = useState({});
     const [arDish, setArDish] = useState(null);
     const [viewMode, setViewMode] = useState('3d'); // '3d' for interactive depth, 'ar' for True AR
@@ -44,8 +44,16 @@ export default function ItemsPage() {
     const getFullImageUrl = (path) => {
         if (!path) return "https://source.unsplash.com/400x300/?food";
         if (path.startsWith('http')) return path;
-        const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-        return `${API_BASE_URL}${normalizedPath}`;
+
+        // Correctly prefix with /images/ for our static assets
+        const normalizedPath = path.startsWith('/') ? path : `/images/${path}`;
+        
+        // If the path already includes /images, don't double it
+        const finalPath = normalizedPath.includes('/images/images/') 
+            ? normalizedPath.replace('/images/images/', '/images/') 
+            : normalizedPath;
+
+        return `${API_BASE_URL}${finalPath}?v=${Date.now()}`;
     };
 
 
@@ -306,7 +314,7 @@ export default function ItemsPage() {
                                     />
                                 ) : (
                                     <ThreeDViewer
-                                        modelUrl={arDish.model_url.startsWith('http') ? arDish.model_url : `${API_BASE_URL}${arDish.model_url.startsWith('/') ? '' : '/'}${arDish.model_url}`}
+                                        modelUrl={arDish.model_url.startsWith('http') ? arDish.model_url : `${API_BASE_URL}${arDish.model_url.startsWith('/') ? '' : '/'}${arDish.model_url}?v=${Date.now()}`}
                                         posterUrl={getFullImageUrl(arDish.image_url)}
                                         itemName={arDish.name}
                                     />

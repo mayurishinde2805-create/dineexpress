@@ -39,6 +39,7 @@ import Gallery3D from "./Gallery3D";
 
 import ForgotPassword from "./ForgotPassword";
 import ForgotCode from "./ForgotCode";
+import StaffPortal from "./StaffPortal";
 
 import { LanguageProvider } from "./context/LanguageContext";
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify-otp" element={<VerifyOTP />} />
+          <Route path="/staff-portal" element={<StaffPortal />} />
 
           {/* Forgot Password Routes */}
           <Route path="/forgot-password" element={<ForgotPassword role="customer" />} />

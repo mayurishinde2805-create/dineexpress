@@ -1,10 +1,11 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "./counterDashboard.css";
 import { useLanguage } from "./context/LanguageContext";
 
-const socket = io("http://192.168.1.113:4000");
+const socket = io(API_BASE_URL);
 
 export default function CounterDashboard() {
     const [orders, setOrders] = useState([]);
@@ -44,7 +45,7 @@ export default function CounterDashboard() {
 
     const fetchOrders = async () => {
         try {
-            const res = await axios.get("http://192.168.1.113:4000/api/orders", { params: { lang: language } });
+            const res = await axios.get(API_BASE_URL + "/api/orders", { params: { lang: language } });
             // Sort by Pending Payment first
             const sorted = res.data.sort((a, b) => {
                 if (a.payment_status === "Pending" && b.payment_status !== "Pending") return -1;
@@ -60,7 +61,7 @@ export default function CounterDashboard() {
     const updatePaymentStatus = async (orderId, status) => {
         try {
             if (status === "Paid") {
-                await axios.post(`http://192.168.1.113:4000/api/orders/confirm-cash`, {
+                await axios.post(`${API_BASE_URL}/api/orders/confirm-cash`, {
                     orderId: orderId
                 });
             }

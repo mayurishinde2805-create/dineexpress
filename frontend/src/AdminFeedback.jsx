@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./adminFeedback.css";
@@ -6,7 +7,7 @@ export default function AdminFeedback() {
     const [feedbacks, setFeedbacks] = useState([]);
 
     useEffect(() => {
-        axios.get("http://192.168.1.113:4000/api/feedback/all")
+        axios.get(API_BASE_URL + "/api/feedback/all")
             .then(res => setFeedbacks(res.data))
             .catch(err => console.error(err));
     }, []);

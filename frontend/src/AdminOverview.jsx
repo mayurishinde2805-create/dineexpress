@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./adminOverview.css";
@@ -14,7 +15,7 @@ export default function AdminOverview() {
         const fetchStats = async () => {
             try {
                 // Correct Endpoint
-                const res = await axios.get("http://192.168.1.113:4000/api/admin/analytics/stats");
+                const res = await axios.get(API_BASE_URL + "/api/admin/analytics/stats");
                 setStats(res.data);
             } catch (err) {
                 console.error("Failed to fetch admin stats", err);

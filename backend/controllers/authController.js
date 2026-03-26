@@ -53,9 +53,14 @@ exports.register = async (req, res) => {
     const expires = new Date(Date.now() + 5 * 60000);
     const otpSql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, ?, ?, ?)";
 
-    db.query(otpSql, [email, mobile, otp, expires], (err) => {
+    db.query(otpSql, [email, mobile, otp, expires], async (err) => {
       if (err) return res.status(500).json({ message: "OTP store failed" });
-      sendEmail(email, otp);
+      try {
+        await sendEmail(email, otp);
+      } catch (mailErr) {
+        console.error("Mail Error:", mailErr);
+        return res.status(500).json({ message: "Failed to send OTP email" });
+      }
       res.json({ message: "OTP sent" });
     });
   });
@@ -93,9 +98,14 @@ exports.resendOtp = async (req, res) => {
     const expires = new Date(Date.now() + 5 * 60000);
 
     const otpSql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, ?, ?, ?)";
-    db.query(otpSql, [email, mobile, otp, expires], (err) => {
+    db.query(otpSql, [email, mobile, otp, expires], async (err) => {
       if (err) return res.status(500).json({ message: "Failed to generate new OTP" });
-      sendEmail(email, otp);
+      try {
+        await sendEmail(email, otp);
+      } catch (mailErr) {
+        console.error("Mail Error:", mailErr);
+        return res.status(500).json({ message: "Failed to send OTP email" });
+      }
       console.log(`RESEND OTP for ${email}: ${otp}`);
       res.json({ success: true, message: "New OTP sent to your email" });
     });
@@ -135,9 +145,14 @@ exports.registerAdmin = async (req, res) => {
       const otp = Math.floor(1000 + Math.random() * 9000);
       const expires = new Date(Date.now() + 5 * 60000);
       const otpSql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, ?, ?, ?)";
-      db.query(otpSql, [email, mobile, otp, expires], (err) => {
+      db.query(otpSql, [email, mobile, otp, expires], async (err) => {
         if (err) return res.status(500).json({ message: "OTP failed" });
-        sendEmail(email, otp);
+        try {
+        await sendEmail(email, otp);
+      } catch (mailErr) {
+        console.error("Mail Error:", mailErr);
+        return res.status(500).json({ message: "Failed to send OTP email" });
+      }
         console.log(`ADMIN OTP for ${email}: ${otp}`);
         res.json({ message: "OTP sent" });
       });
@@ -242,9 +257,14 @@ exports.resendAdminOtp = async (req, res) => {
     const otp = Math.floor(1000 + Math.random() * 9000);
     const expires = new Date(Date.now() + 5 * 60000);
     const otpSql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, ?, ?, ?)";
-    db.query(otpSql, [email, mobile, otp, expires], (err) => {
+    db.query(otpSql, [email, mobile, otp, expires], async (err) => {
       if (err) return res.status(500).json({ message: "OTP failed" });
-      sendEmail(email, otp);
+      try {
+        await sendEmail(email, otp);
+      } catch (mailErr) {
+        console.error("Mail Error:", mailErr);
+        return res.status(500).json({ message: "Failed to send OTP email" });
+      }
       console.log(`ADMIN RESEND OTP for ${email}: ${otp}`);
       res.json({ message: "OTP resent" });
     });
@@ -264,9 +284,14 @@ exports.registerKitchen = async (req, res) => {
       const otp = Math.floor(1000 + Math.random() * 9000);
       const expires = new Date(Date.now() + 5 * 60000);
       const otpSql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, ?, ?, ?)";
-      db.query(otpSql, [email, mobile, otp, expires], (err) => {
+      db.query(otpSql, [email, mobile, otp, expires], async (err) => {
         if (err) return res.status(500).json({ message: "OTP failed" });
-        sendEmail(email, otp);
+        try {
+        await sendEmail(email, otp);
+      } catch (mailErr) {
+        console.error("Mail Error:", mailErr);
+        return res.status(500).json({ message: "Failed to send OTP email" });
+      }
         console.log(`KITCHEN OTP for ${email}: ${otp}`);
         res.json({ message: "OTP sent" });
       });
@@ -369,9 +394,14 @@ exports.resendKitchenOtp = async (req, res) => {
     const otp = Math.floor(1000 + Math.random() * 9000);
     const expires = new Date(Date.now() + 5 * 60000);
     const otpSql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, ?, ?, ?)";
-    db.query(otpSql, [email, mobile, otp, expires], (err) => {
+    db.query(otpSql, [email, mobile, otp, expires], async (err) => {
       if (err) return res.status(500).json({ message: "OTP failed" });
-      sendEmail(email, otp);
+      try {
+        await sendEmail(email, otp);
+      } catch (mailErr) {
+        console.error("Mail Error:", mailErr);
+        return res.status(500).json({ message: "Failed to send OTP email" });
+      }
       console.log(`KITCHEN RESEND OTP for ${email}: ${otp}`);
       res.json({ message: "OTP resent" });
     });
@@ -396,10 +426,15 @@ exports.forgotPassword = (req, res) => {
 
     // Store OTP
     const sql = "INSERT INTO otps (email, mobile, otp, expires_at) VALUES (?, '0000000000', ?, ?)";
-    db.query(sql, [email, otp, expires], (err) => {
+    db.query(sql, [email, otp, expires], async (err) => {
       if (err) return res.status(500).json({ message: "Failed to generate OTP" });
 
-      sendEmail(email, otp);
+      try {
+        await sendEmail(email, otp);
+      } catch (mailErr) {
+        console.error("Mail Error:", mailErr);
+        return res.status(500).json({ message: "Failed to send OTP email" });
+      }
       console.log(`RESET OTP for ${email}: ${otp}`);
       res.json({ message: "OTP sent to email" });
     });

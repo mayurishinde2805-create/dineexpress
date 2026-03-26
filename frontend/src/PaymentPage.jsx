@@ -17,7 +17,7 @@ export default function PaymentPage() {
     const [processing, setProcessing] = useState(false);
 
     useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem("cart")) || {};
+        const savedCart = ( (() => { try { const val = localStorage.getItem("cart"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || {};
         const savedNote = localStorage.getItem("orderNote") || "";
         if (Object.keys(savedCart).length === 0) navigate("/cart");
         setCart(savedCart);
@@ -32,7 +32,7 @@ export default function PaymentPage() {
     // --- PLACE ORDER FUNCTION (CASH TIMING) ---
     const handlePlaceOrder = async (method) => {
         setProcessing(true);
-        const user = JSON.parse(localStorage.getItem("user")) || { id: 1 };
+        const user = ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || { id: 1 };
         const orderItems = Object.values(cart).map(item => ({
             item_id: item.id,
             quantity: item.quantity,
@@ -76,7 +76,7 @@ export default function PaymentPage() {
     // --- RAZORPAY HANDLER ---
     const handleOnlinePayment = async () => {
         setProcessing(true);
-        const user = JSON.parse(localStorage.getItem("user")) || { id: 1 };
+        const user = ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || { id: 1 };
         const orderItems = Object.values(cart).map(item => ({
             item_id: item.id,
             quantity: item.quantity,

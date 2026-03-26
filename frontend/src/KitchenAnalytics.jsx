@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -32,7 +33,7 @@ export default function KitchenAnalytics() {
 
     const fetchKitchenStats = async () => {
         try {
-            const statusRes = await axios.get("http://192.168.1.113:4000/api/admin/analytics/status");
+            const statusRes = await axios.get(API_BASE_URL + "/api/admin/analytics/status");
             const data = statusRes.data || [];
             setStatusData(data);
 

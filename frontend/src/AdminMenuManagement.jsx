@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./adminMenuManagement.css";
@@ -37,7 +38,7 @@ export default function AdminMenuManagement() {
     const fetchItems = async () => {
         try {
             const role = localStorage.getItem("role");
-            const res = await axios.get("http://192.168.1.113:4000/api/menu/all", {
+            const res = await axios.get(API_BASE_URL + "/api/menu/all", {
                 headers: { role }
             });
             setItems(res.data);
@@ -82,7 +83,7 @@ export default function AdminMenuManagement() {
         if (window.confirm("Are you sure you want to delete this item?")) {
             try {
                 const role = localStorage.getItem("role");
-                await axios.delete(`http://192.168.1.113:4000/api/menu/${id}`, {
+                await axios.delete(`${API_BASE_URL}/api/menu/${id}`, {
                     headers: { role }
                 });
                 fetchItems();
@@ -100,9 +101,9 @@ export default function AdminMenuManagement() {
             const config = { headers: { role } };
 
             if (editingItem) {
-                await axios.put(`http://192.168.1.113:4000/api/menu/${editingItem.id}`, formData, config);
+                await axios.put(`${API_BASE_URL}/api/menu/${editingItem.id}`, formData, config);
             } else {
-                await axios.post("http://192.168.1.113:4000/api/menu", formData, config);
+                await axios.post(API_BASE_URL + "/api/menu", formData, config);
             }
             setShowModal(false);
             fetchItems();

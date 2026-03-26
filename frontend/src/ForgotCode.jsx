@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -31,7 +32,7 @@ export default function ForgotCode({ role }) {
         setCode("");
 
         try {
-            const res = await axios.post("http://192.168.1.113:4000/api/auth/recover-code", {
+            const res = await axios.post(API_BASE_URL + "/api/auth/recover-code", {
                 email,
                 password,
                 role

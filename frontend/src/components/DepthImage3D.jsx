@@ -47,10 +47,10 @@ export default function DepthImage3D({ image, depthMapCanvas }) {
     }
 
     // Standardize URL: use API_BASE_URL and ensure consistent path normalization
-    const normalizedPath = image.image_url.startsWith('/') ? image.image_url : `/${image.image_url}`;
+    const normalizedPath = image.image_url.startsWith('/') ? image.image_url.slice(1) : image.image_url;
     const imageUrl = image.image_url.startsWith('http')
         ? image.image_url
-        : `${API_BASE_URL}${normalizedPath}`;
+        : `${API_BASE_URL}/images/${normalizedPath}?v=${Date.now()}`;
 
     return (
         <div style={{ width: '100%', height: '500px', background: '#0a1c15', borderRadius: '15px', overflow: 'hidden' }}>

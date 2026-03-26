@@ -37,6 +37,15 @@ export default function Welcome() {
       >
         Proceed →
       </button>
+
+      <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', opacity: 0.5 }}>
+        <button 
+          onClick={() => navigate("/staff-portal")}
+          style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline' }}
+        >
+          Staff Entrance
+        </button>
+      </div>
     </div>
   );
 }

@@ -56,14 +56,20 @@ const sendEmail = async (to, otp) => {
 
   // 3. FALLBACK TO SMTP (LIKELY TO FAIL ON RENDER)
   console.log(`[DEBUG] Falling back to SMTP for: ${to}`);
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     transporter.sendMail({
       from: process.env.EMAIL_USER || "mayurishinde2805@gmail.com",
       to,
       subject: "Your DineExpress OTP",
       text: `Your OTP for DineExpress is: ${otp}. This code will expire in 5 minutes.`,
     }, (err, info) => {
-      resolve(!err);
+      if (err) {
+        console.error("❌ [SMTP ERROR]:", err.message);
+        reject(new Error("All email delivery methods failed."));
+      } else {
+        console.log("✅ [SMTP SUCCESS]");
+        resolve(true);
+      }
     });
   });
 };

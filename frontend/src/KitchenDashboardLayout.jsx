@@ -5,7 +5,7 @@ import "./kitchenLayout.css";
 
 export default function KitchenDashboardLayout() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [user] = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
+    const [user] = useState(() => ( (() => { try { return ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || JSON.parse("{}"); } catch(e) { return JSON.parse("{}"); } })() ));
     const [showProfile, setShowProfile] = useState(false);
     const profileRef = React.useRef(null);
 
@@ -30,6 +30,7 @@ export default function KitchenDashboardLayout() {
         { id: "past", name: "Order History", icon: "📜", path: "/kitchen/history" },
         { id: "inventory", name: "Kitchen Status", icon: "📊", path: "/kitchen/status" },
         { id: "settings", name: "Settings", icon: "⚙️", path: "/kitchen/settings" },
+        { id: "admin-view", name: "Admin View", icon: "🔐", path: "/admin" },
     ];
 
     const handleLogout = () => {

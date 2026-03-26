@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./menu.css";
@@ -25,13 +26,13 @@ export default function AdminDashboard() {
     }, [activeTab]);
 
     const fetchMenu = () => {
-        axios.get("http://192.168.1.113:4000/api/menu/all").then(res => setMenuItems(res.data));
+        axios.get(API_BASE_URL + "/api/menu/all").then(res => setMenuItems(res.data));
     };
 
     const fetchStats = async () => {
         try {
             // Fetch Dashboard Grid Stats
-            const statsRes = await axios.get("http://192.168.1.113:4000/api/admin/analytics/stats");
+            const statsRes = await axios.get(API_BASE_URL + "/api/admin/analytics/stats");
             setStats({
                 totalOrders: statsRes.data.todayOrders,
                 revenue: statsRes.data.todayRevenue,
@@ -41,7 +42,7 @@ export default function AdminDashboard() {
             });
 
             // Fetch Daily Popular Items
-            const popRes = await axios.get("http://192.168.1.113:4000/api/admin/analytics/popular?period=daily");
+            const popRes = await axios.get(API_BASE_URL + "/api/admin/analytics/popular?period=daily");
             setDailyPopular(popRes.data);
 
         } catch (err) {
@@ -57,7 +58,7 @@ export default function AdminDashboard() {
         e.preventDefault();
         const endpoint = formData.id ? "update" : "add";
         try {
-            await axios.post(`http://192.168.1.113:4000/api/menu/${endpoint}`, formData);
+            await axios.post(`${API_BASE_URL}/api/menu/${endpoint}`, formData);
             alert(`Item ${formData.id ? "Updated" : "Added"}!`);
             fetchMenu();
             resetForm();
@@ -70,7 +71,7 @@ export default function AdminDashboard() {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure?")) return;
         try {
-            await axios.post("http://192.168.1.113:4000/api/menu/delete", { id });
+            await axios.post(API_BASE_URL + "/api/menu/delete", { id });
             fetchMenu();
         } catch (err) {
             console.error(err);

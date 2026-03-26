@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./drinksMenu.css";
@@ -58,7 +59,7 @@ export default function DrinksMenu() {
 
     useEffect(() => {
         axios
-            .get("http://192.168.1.113:4000/api/menu/all")
+            .get(API_BASE_URL + "/api/menu/all")
             .then((res) => {
                 const drinks = res.data.filter(
                     (item) => item.category?.toLowerCase() === "drinks"

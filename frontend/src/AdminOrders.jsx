@@ -1,10 +1,11 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./adminOrders.css";
 import { useLanguage } from "./context/LanguageContext";
 import { io } from "socket.io-client";
 
-const socket = io("http://192.168.1.113:4000");
+const socket = io(API_BASE_URL);
 
 export default function AdminOrders() {
     const [orders, setOrders] = useState([]);
@@ -36,7 +37,7 @@ export default function AdminOrders() {
 
     const fetchOrders = async () => {
         try {
-            const res = await axios.get("http://192.168.1.113:4000/api/orders", { params: { lang: language } });
+            const res = await axios.get(API_BASE_URL + "/api/orders", { params: { lang: language } });
             setOrders(res.data);
         } catch (err) {
             console.error(err);
@@ -45,7 +46,7 @@ export default function AdminOrders() {
 
     const updateOrderStatus = async (orderId, newStatus) => {
         try {
-            await axios.put(`http://192.168.1.113:4000/api/orders/${orderId}/status`, {
+            await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, {
                 status: newStatus,
             });
             fetchOrders();
@@ -57,7 +58,7 @@ export default function AdminOrders() {
 
     const confirmCashPayment = async (orderId) => {
         try {
-            await axios.post("http://192.168.1.113:4000/api/orders/confirm-cash", {
+            await axios.post(API_BASE_URL + "/api/orders/confirm-cash", {
                 orderId: orderId
             });
             alert("Payment Confirmed! Order sent to Kitchen.");

@@ -23,7 +23,7 @@ export default function CustomerDashboard() {
     };
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("user"));
+        const storedUser = ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() );
         if (!storedUser) {
             navigate("/login");
             return;
@@ -51,7 +51,7 @@ export default function CustomerDashboard() {
     const handleCancelOrder = async (orderId) => {
         if (!window.confirm(t("confirm_cancel") || "Are you sure you want to cancel this order?")) return;
         try {
-            await axios.put(`http://192.168.1.113:4000/api/orders/${orderId}/cancel`);
+            await axios.put(`${API_BASE_URL}/api/orders/${orderId}/cancel`);
             fetchOrders(user.id, language);
         } catch (err) {
             alert(err.response?.data?.message || "Failed to cancel order");

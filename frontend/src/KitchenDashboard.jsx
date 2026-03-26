@@ -1,16 +1,17 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "./kitchenDashboard.css";
 
-const socket = io("http://192.168.1.113:4000");
+const socket = io(API_BASE_URL);
 
 // Import useLanguage
 import { useLanguage } from "./context/LanguageContext";
 
 export default function KitchenDashboard() {
     const [orders, setOrders] = useState([]);
-    const [user] = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
+    const [user] = useState(() => ( (() => { try { return ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || JSON.parse("{}"); } catch(e) { return JSON.parse("{}"); } })() ));
     const [showProfile, setShowProfile] = useState(false);
     const profileRef = React.useRef(null);
     const { language } = useLanguage();
@@ -52,7 +53,7 @@ export default function KitchenDashboard() {
     const fetchActiveOrders = async () => {
         try {
             // Corrected API route
-            const res = await axios.get("http://192.168.1.113:4000/api/orders/kitchen", { params: { lang: language } });
+            const res = await axios.get(API_BASE_URL + "/api/orders/kitchen", { params: { lang: language } });
             // Filter is usually done in backend now, but safe to keep or remove. 
             // Backend `getKitchenOrders` filters for Paid + Active.
             // Frontend filter here was: New, Preparing, Pending, Ready.
@@ -66,7 +67,7 @@ export default function KitchenDashboard() {
 
     const updateStatus = async (orderId, newStatus) => {
         try {
-            await axios.put(`http://192.168.1.113:4000/api/orders/${orderId}/status`, {
+            await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, {
                 status: newStatus,
             });
             fetchActiveOrders();

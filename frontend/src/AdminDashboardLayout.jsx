@@ -5,7 +5,7 @@ import "./adminDashboard.css";
 export default function AdminDashboardLayout() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-    const [user] = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
+    const [user] = useState(() => ( (() => { try { return ( (() => { try { const val = localStorage.getItem("user"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || JSON.parse("{}"); } catch(e) { return JSON.parse("{}"); } })() ));
     const [showProfile, setShowProfile] = useState(false);
     const profileRef = React.useRef(null);
 
@@ -35,6 +35,7 @@ export default function AdminDashboardLayout() {
         { id: "feedback", name: "Feedback", icon: "💬", path: "/admin/feedback" },
         { id: "analytics", name: "Analytics", icon: "📊", path: "/admin/analytics" },
         { id: "settings", name: "Settings", icon: "⚙️", path: "/admin/settings" },
+        { id: "kitchen-view", name: "Kitchen View", icon: "🍳", path: "/kitchen" },
     ];
 
     const handleLogout = () => {

@@ -11,7 +11,7 @@ export default function OrderSummary() {
     const { t } = useLanguage();
 
     useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem("cart")) || {};
+        const savedCart = ( (() => { try { const val = localStorage.getItem("cart"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() ) || {};
         if (Object.keys(savedCart).length === 0) {
             navigate("/cart");
         }

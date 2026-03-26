@@ -1,3 +1,4 @@
+import API_BASE_URL from "./apiConfig";
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
@@ -35,7 +36,7 @@ export default function ForgotPassword({ role = "customer" }) {
     const handleSendOtp = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://192.168.1.113:4000/api/auth/forgot-password", { email });
+            await axios.post(API_BASE_URL + "/api/auth/forgot-password", { email });
             setMessage("OTP sent to your email.");
             setStep(2);
         } catch (err) {
@@ -46,7 +47,7 @@ export default function ForgotPassword({ role = "customer" }) {
     const handleVerifyOtp = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://192.168.1.113:4000/api/auth/verify-reset-otp", { email, otp });
+            await axios.post(API_BASE_URL + "/api/auth/verify-reset-otp", { email, otp });
             setMessage("OTP Verified. Set new password.");
             setStep(3);
         } catch (err) {
@@ -57,7 +58,7 @@ export default function ForgotPassword({ role = "customer" }) {
     const handleResetPassword = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://192.168.1.113:4000/api/auth/reset-password", { email, otp, newPassword });
+            await axios.post(API_BASE_URL + "/api/auth/reset-password", { email, otp, newPassword });
             setMessage("Password Reset Successfully!");
             setTimeout(() => {
                 if (role === 'admin') navigate("/admin/login");
