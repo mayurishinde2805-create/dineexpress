@@ -27,13 +27,12 @@ export default function AdminTables() {
         }
     };
 
-    // Chart Data Preparation
     const availableCount = tables.filter(t => (t.status || 'available').toLowerCase() === "available").length;
     const occupiedCount = tables.filter(t => (t.status || '').toLowerCase() === "occupied").length;
 
     const data = [
-        { name: 'Available', value: availableCount, color: '#4ade80' }, // Green
-        { name: 'Occupied', value: occupiedCount, color: '#ef4444' },   // Red
+        { name: 'Available', value: availableCount, color: '#4ade80' },
+        { name: 'Occupied', value: occupiedCount, color: '#ef4444' },
     ];
 
     const handleAddNew = () => {
@@ -94,10 +93,10 @@ export default function AdminTables() {
         }
     };
 
-    const resetTable = async (tableId) => {
+    const setStatus = async (tableId, status) => {
         try {
             await axios.put(`${API_BASE_URL}/api/tables/${tableId}/status`, {
-                status: "available"
+                status: status
             });
             fetchTables();
         } catch (err) {
@@ -115,15 +114,11 @@ export default function AdminTables() {
                     </div>
                     <div className="stat-card">
                         <span className="stat-label">Available</span>
-                        <span className="stat-value available">
-                            {availableCount}
-                        </span>
+                        <span className="stat-value available">{availableCount}</span>
                     </div>
                     <div className="stat-card">
                         <span className="stat-label">Occupied</span>
-                        <span className="stat-value occupied">
-                            {occupiedCount}
-                        </span>
+                        <span className="stat-value occupied">{occupiedCount}</span>
                     </div>
                 </div>
                 <button className="add-table-btn" onClick={handleAddNew}>
@@ -131,7 +126,6 @@ export default function AdminTables() {
                 </button>
             </div>
 
-            {/* Added Graph Section */}
             <div className="tables-chart-section" style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '20px', marginBottom: '20px', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <h3 style={{ margin: '0 0 15px 0', color: 'var(--accent-cream)' }}>📊 Seating Occupancy</h3>
                 <div style={{ width: '100%', height: 250 }}>
@@ -166,7 +160,7 @@ export default function AdminTables() {
                         <div className="table-card-header">
                             <h3>Table {table.table_number}</h3>
                             <span className={`status-badge ${table.status?.toLowerCase()}`}>
-                                {table.status === "Occupied" || table.status === "occupied" ? "🔴 Occupied" : "🟢 Available"}
+                                {table.status?.toLowerCase() === "occupied" ? "🔴 Occupied" : "🟢 Available"}
                             </span>
                         </div>
 
@@ -186,22 +180,33 @@ export default function AdminTables() {
                         </div>
 
                         <div className="table-actions">
+                            <div className="occupancy-toggles" style={{ marginBottom: '10px', display: 'flex', gap: '5px' }}>
+                                <button 
+                                    className={`action-btn ${table.status?.toLowerCase() === 'occupied' ? 'active-red' : ''}`}
+                                    onClick={() => setStatus(table.id, 'occupied')}
+                                    style={{ flex: 1, backgroundColor: table.status?.toLowerCase() === 'occupied' ? '#ef4444' : 'rgba(239, 68, 68, 0.1)', color: table.status?.toLowerCase() === 'occupied' ? '#fff' : '#ef4444', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer' }}
+                                >
+                                    Occupied
+                                </button>
+                                <button 
+                                    className={`action-btn ${table.status?.toLowerCase() !== 'occupied' ? 'active-green' : ''}`}
+                                    onClick={() => setStatus(table.id, 'available')}
+                                    style={{ flex: 1, backgroundColor: table.status?.toLowerCase() !== 'occupied' ? '#4ade80' : 'rgba(74, 222, 128, 0.1)', color: table.status?.toLowerCase() !== 'occupied' ? '#000' : '#4ade80', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer' }}
+                                >
+                                    Available
+                                </button>
+                            </div>
+                            
                             {table.qr_code && (
-                                <button className="action-btn download" onClick={() => downloadQR(table.id, table.table_number, table.qr_code)}>
+                                <button className="action-btn download" onClick={() => downloadQR(table.id, table.table_number, table.qr_code)} style={{ width: '100%', marginBottom: '10px', padding: '8px', borderRadius: '6px' }}>
                                     ⬇️ Download QR
                                 </button>
                             )}
-                            {(table.status === "Occupied" || table.status === "occupied") && (
-                                <button className="action-btn reset" onClick={() => resetTable(table.id)}>
-                                    🔄 Reset Table
-                                </button>
-                            )}
-                            <button className="action-btn edit" onClick={() => handleEdit(table)}>
-                                ✏️ Edit
-                            </button>
-                            <button className="action-btn delete" onClick={() => handleDelete(table.id)}>
-                                🗑️ Delete
-                            </button>
+                            
+                            <div className="action-btns-secondary" style={{ display: 'flex', gap: '5px', justifyContent: 'center' }}>
+                                <button className="action-btn edit" onClick={() => handleEdit(table)} title="Edit">✏️</button>
+                                <button className="action-btn delete" onClick={() => handleDelete(table.id)} title="Delete">🗑️</button>
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -235,23 +240,12 @@ export default function AdminTables() {
                                 />
                             </div>
 
-                            <div className="form-group">
-                                <label>Status *</label>
-                                <select
-                                    value={formData.status}
-                                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                >
-                                    <option value="available">Available</option>
-                                    <option value="occupied">Occupied</option>
-                                </select>
-                            </div>
-
                             <div className="modal-actions">
                                 <button type="button" className="cancel-btn" onClick={() => setShowModal(false)}>
                                     Cancel
                                 </button>
-                                <button type="submit" className="submit-btn">
-                                    {editingTable ? "Update Status" : "Add Table"}
+                                <button type="submit" className="submit-btn" style={{ background: '#4ade80', color: '#000' }}>
+                                    {editingTable ? "Update" : "Add Table"}
                                 </button>
                             </div>
                         </form>

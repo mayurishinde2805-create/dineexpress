@@ -14,10 +14,10 @@ exports.getTables = (req, res) => {
 exports.addTable = async (req, res) => {
     const { table_number, capacity } = req.body;
 
-    // Generate QR Content (e.g., URL to order page for this table)
-    // Assuming Frontend URL is http://localhost:3000/menu?table=5
-    // OR just the table number data
-    const qrData = `http://localhost:3000/home?table=${table_number}`;
+    // Determine base URL dynamically
+    const frontendUrl = process.env.FRONTEND_URL || "https://dineexpress-frontend.onrender.com";
+    const qrData = `${frontendUrl}/menu?table=${table_number}`;
+
 
     try {
         const qrImage = await QRCode.toDataURL(qrData);
@@ -58,7 +58,9 @@ exports.updateTableStatus = (req, res) => {
 // REGENERATE QR (Optional)
 exports.regenerateQR = async (req, res) => {
     const { id, table_number } = req.body;
-    const qrData = `http://localhost:3000/home?table=${table_number}`;
+    const frontendUrl = process.env.FRONTEND_URL || "https://dineexpress-frontend.onrender.com";
+    const qrData = `${frontendUrl}/menu?table=${table_number}`;
+
     try {
         const qrImage = await QRCode.toDataURL(qrData);
         db.query("UPDATE tables SET qr_code = ? WHERE id = ?", [qrImage, id], (err) => {

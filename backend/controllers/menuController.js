@@ -56,6 +56,7 @@ exports.addMenuItem = (req, res) => {
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     db.query(sql, [name, description, price, category, sub_category, image_url, JSON.stringify(variants || []), type, diet || 'veg', is_available !== false ? 1 : 0], (err, result) => {
         if (err) return res.status(500).send(err);
+        if (req.io) req.io.emit('menuUpdated');
         res.json({ message: "Menu Item Added", id: result.insertId });
     });
 };
@@ -67,6 +68,7 @@ exports.updateMenuItem = (req, res) => {
                  WHERE id=?`;
     db.query(sql, [name, description, price, category, sub_category, image_url, JSON.stringify(variants || []), type, diet || 'veg', is_available !== false ? 1 : 0, id], (err, result) => {
         if (err) return res.status(500).send(err);
+        if (req.io) req.io.emit('menuUpdated');
         res.json({ message: "Menu Item Updated" });
     });
 };
@@ -76,6 +78,7 @@ exports.deleteMenuItem = (req, res) => {
     const sql = "DELETE FROM menu_items WHERE id=?";
     db.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err);
+        if (req.io) req.io.emit('menuUpdated');
         res.json({ message: "Menu Item Deleted" });
     });
 };

@@ -37,18 +37,25 @@ export default function Menu() {
     const savedOrder = ( (() => { try { const val = localStorage.getItem("activeOrder"); return val !== 'undefined' ? JSON.parse(val) : null; } catch(e) { return null; } })() );
     if (savedOrder) setActiveOrder(savedOrder);
 
-    axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
-      .then(res => {
-        const allowedCategories = ['Starters', 'Main Menu', 'Desserts', 'Drinks'];
-        const data = Array.isArray(res.data) ? res.data : [];
-        const filteredData = data.filter(item => {
-          const cat = (item.category_en || item.category || "").trim();
-          return allowedCategories.some(allowed => allowed.toLowerCase() === cat.toLowerCase());
-        });
-        setMenuItems(filteredData);
-        setCategories(["All", ...allowedCategories]);
-      })
-      .catch(err => console.error("Error fetching menu:", err));
+    const fetchMenu = () => {
+      axios.get(`${API_BASE_URL}/api/menu/all`, { params: { lang: language } })
+        .then(res => {
+          const allowedCategories = ['Starters', 'Main Menu', 'Desserts', 'Drinks'];
+          const data = Array.isArray(res.data) ? res.data : [];
+          const filteredData = data.filter(item => {
+            const cat = (item.category_en || item.category || "").trim();
+            return allowedCategories.some(allowed => allowed.toLowerCase() === cat.toLowerCase());
+          });
+          setMenuItems(filteredData);
+          setCategories(["All", ...allowedCategories]);
+        })
+        .catch(err => console.error("Error fetching menu:", err));
+    };
+
+    fetchMenu();
+
+    socket.on("menuUpdated", fetchMenu);
+
 
     socket.on("statusUpdated", (data) => {
       if (activeOrder && activeOrder.id === data.id) {
@@ -58,7 +65,10 @@ export default function Menu() {
       }
     });
 
-    return () => socket.off("statusUpdated");
+    return () => {
+      socket.off("statusUpdated");
+      socket.off("menuUpdated");
+    };
   }, [activeOrder, language]);
 
   // Helper to generate full image URL

@@ -1,18 +1,17 @@
-const db = require("./config/db");
+const db = require('./config/db');
 
-const checkSchemas = async () => {
-    const tables = ['menu', 'orders'];
-    for (const table of tables) {
-        db.query(`DESCRIBE ${table}`, (err, result) => {
-            if (err) {
-                console.log(`Error describing ${table}: (Table might not exist)`);
-            } else {
-                console.log(`Schema for ${table}:`, result);
-            }
-        });
+db.query("SELECT id, table_number, status, capacity, qr_code FROM tables", (err, results) => {
+    if (err) {
+        console.error("Error querying tables:", err);
+        process.exit(1);
     }
-    // Wait a bit for queries to finish before exiting (simple script)
-    setTimeout(() => process.exit(), 1000);
-};
-
-checkSchemas();
+    console.log("Current Tables in DB:");
+    console.log(JSON.stringify(results.map(r => ({
+        id: r.id,
+        table: r.table_number,
+        status: r.status,
+        capacity: r.capacity,
+        has_qr: r.qr_code ? "YES (Length: " + r.qr_code.length + ")" : "NO"
+    })), null, 2));
+    process.exit(0);
+});

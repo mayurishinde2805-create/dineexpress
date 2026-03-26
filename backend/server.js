@@ -22,8 +22,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 
 // 📂 STATIC FILES (Consolidated in backend/public for Render)
+<<<<<<< HEAD
 app.use('/images', cors(), express.static(path.join(__dirname, 'public/images')));
 app.use('/models', cors(), express.static(path.join(__dirname, 'public/models')));
+=======
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/models', express.static(path.join(__dirname, 'public/models')));
+>>>>>>> 271cc289101cd760eef3e6d68fde65682aefd892
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {

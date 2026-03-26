@@ -53,7 +53,11 @@ export default function ItemsPage() {
             ? normalizedPath.replace('/images/images/', '/images/') 
             : normalizedPath;
 
+<<<<<<< HEAD
         return `${API_BASE_URL}${finalPath}?v=${Date.now()}`;
+=======
+        return `${API_BASE_URL}${finalPath}`;
+>>>>>>> 271cc289101cd760eef3e6d68fde65682aefd892
     };
 
 
