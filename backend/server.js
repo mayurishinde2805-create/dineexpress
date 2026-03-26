@@ -4,6 +4,9 @@ const cors = require("cors");
 const http = require("http");
 const path = require("path");
 
+const app = express();
+const server = http.createServer(app);
+
 const traces = [];
 app.use((req, res, next) => {
   const logMsg = `[${new Date().toISOString()}] ${req.method} ${req.url}`;
@@ -19,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 // 🧪 EMERGENCY DIAGNOSTIC ROUTES (TOP PRIORITY)
-app.get("/", (req, res) => res.send("DineExpress Emergency Backend v2 [Build:1774470056681] 🚀"));
+app.get("/", (req, res) => res.send("DineExpress Emergency Backend v3 PRO 🚀"));
 app.get("/api/ping", (req, res) => res.json({ status: "alive" }));
 app.get("/ping", (req, res) => res.send("pong"));
 
@@ -27,7 +30,7 @@ app.get("/ping", (req, res) => res.send("pong"));
 const authRoutes = require('./routes/auth');
 const menuRoutes = require('./routes/menu');
 
-// 🔌 ROUTE REGISTRATION (BEFORE MIDDLEWARES)
+// 🔌 ROUTE REGISTRATION
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 
