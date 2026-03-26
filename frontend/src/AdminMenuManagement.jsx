@@ -47,6 +47,14 @@ export default function AdminMenuManagement() {
         }
     };
 
+    const getFullImageUrl = (path) => {
+        if (!path) return "";
+        if (path.startsWith('http')) return path;
+        const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+        return `${API_BASE_URL}${normalizedPath}`;
+    };
+
+
     const handleAddNew = () => {
         setEditingItem(null);
         setFormData({
@@ -162,7 +170,7 @@ export default function AdminMenuManagement() {
                                     <td>
                                         <div className="item-image">
                                             {item.image_url ? (
-                                                <img src={item.image_url} alt={item.name} />
+                                                <img src={getFullImageUrl(item.image_url)} alt={item.name} />
                                             ) : (
                                                 <div className="no-image">📷</div>
                                             )}
