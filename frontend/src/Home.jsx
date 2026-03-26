@@ -10,6 +10,16 @@ export default function Home() {
     const navigate = useNavigate();
     const { t, language, changeLanguage } = useLanguage();
 
+    React.useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const table = params.get("table");
+        if (table) {
+            localStorage.setItem("table_no", `Table ${table}`);
+            console.log("📍 Table detected and saved:", table);
+        }
+    }, []);
+
+
     const categories = [
         {
             id: "starters",

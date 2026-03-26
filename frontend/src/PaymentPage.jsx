@@ -43,12 +43,13 @@ export default function PaymentPage() {
 
         const payload = {
             user_id: user.id || 1,
-            table_no: "Table 1",
+            table_no: localStorage.getItem("table_no") || "Table 1",
             items: orderItems,
             total_amount: grandTotal,
             payment_status: "Pending",
             payment_method: "Cash"
         };
+
 
         if (orderNote && payload.items.length > 0) {
             payload.items[0].special_request = (payload.items[0].special_request || "") + " [Global Note: " + orderNote + "]";
@@ -87,12 +88,13 @@ export default function PaymentPage() {
 
         const payload = {
             user_id: user.id || 1,
-            table_no: "Table 1",
+            table_no: localStorage.getItem("table_no") || "Table 1",
             items: orderItems,
             total_amount: grandTotal,
             payment_status: "Pending",
             payment_method: "Razorpay"
         };
+
 
         if (orderNote && payload.items.length > 0) {
             payload.items[0].special_request = (payload.items[0].special_request || "") + " [Global Note: " + orderNote + "]";
