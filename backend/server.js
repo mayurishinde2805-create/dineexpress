@@ -7,6 +7,11 @@ const path = require("path");
 const app = express();
 const server = http.createServer(app);
 
+app.use((req, res, next) => {
+  console.log(`[TRACE] ${req.method} ${req.url}`);
+  next();
+});
+
 app.use(cors());
 app.use(express.json());
 
