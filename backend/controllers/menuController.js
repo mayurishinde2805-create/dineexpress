@@ -107,21 +107,32 @@ exports.debugRaw = (req, res) => {
   });
 };
 
-exports.debugFiles = (req, res) => {
-  const fs = require('fs');
+exports.emergencyReseed = (req, res) => {
   const path = require('path');
-  const root = path.join(__dirname, '..');
   try {
-      const files = fs.readdirSync(root);
-      const required = ['seed_complete_menu.js', 'seed_multilang.js', 'patch_prices.js', 'setup_qr_tables.js'];
-      const status = {};
-      required.forEach(f => status[f] = files.includes(f));
-      res.json({ 
-          found: status,
-          root_files_count: files.length,
-          dirname: __dirname 
+      const secret = req.query.secret;
+      if (secret !== 'dine_seed_2026') return res.status(401).send("Unauthorized");
+      
+      const root = path.join(__dirname, '..');
+      const { seedMenu } = require(path.join(root, 'seed_complete_menu'));
+      const { updateTranslations } = require(path.join(root, 'seed_multilang'));
+      const { diversifyPrices } = require(path.join(root, 'patch_prices'));
+      const { setupTables } = require(path.join(root, 'setup_qr_tables'));
+
+      seedMenu((err1) => {
+          if (err1) return res.status(500).json({ error: "Step 1 Failed", details: err1 });
+          updateTranslations((err2) => {
+              if (err2) return res.status(500).json({ error: "Step 2 Failed", details: err2 });
+              diversifyPrices((err3) => {
+                  if (err3) return res.status(500).json({ error: "Step 3 Failed", details: err3 });
+                  setupTables((err4) => {
+                      if (err4) return res.status(500).json({ error: "Step 4 Failed", details: err4 });
+                      res.json({ message: "Production Ecosystem FULL Success! 🥘🚀📊" });
+                  });
+              });
+          });
       });
   } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: err.message, stack: err.stack });
   }
 };
