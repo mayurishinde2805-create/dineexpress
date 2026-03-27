@@ -25,6 +25,7 @@ exports.seedMenu = (callback) => {
             // Ignore error 1060 (Duplicate column) or 1061 (Duplicate key)
             syncSchema(idx + 1, cb);
         });
+
     };
 
 
