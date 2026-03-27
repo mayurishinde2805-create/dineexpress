@@ -15,6 +15,7 @@ router.get('/reseed-prod-emergency', (req, res) => {
         const { seedMenu } = require('../seed_complete_menu');
         const { updateTranslations } = require('../seed_multilang');
         const { diversifyPrices } = require('../patch_prices');
+        const { setupTables } = require('../setup_qr_tables');
 
         console.log("Starting Emergency Native Reseed...");
 
@@ -27,10 +28,15 @@ router.get('/reseed-prod-emergency', (req, res) => {
                 diversifyPrices((err3) => {
                     if (err3) return res.status(500).json({ error: "Step 3 (Price Patch) Failed", details: err3.message || err3 });
                     
-                    res.json({ message: "Production Database Native Reseed Success! 🥘🚀" });
+                    setupTables((err4) => {
+                         if (err4) return res.status(500).json({ error: "Step 4 (Table Setup) Failed", details: err4.message || err4 });
+                         
+                         res.json({ message: "Production Ecosystem Full Native Reseed Success! 🥘🚀📊" });
+                    });
                 });
             });
         });
+
     } catch (err) {
         console.error("Emergency Reseed Route Error:", err);
         res.status(500).json({ error: "Route Execution Crash", details: err.message, stack: err.stack });
