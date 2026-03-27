@@ -47,51 +47,47 @@ const translate = (text, lang) => {
     return null;
 };
 
-const updateTranslations = async () => {
+exports.updateTranslations = (callback) => {
     console.log("Starting translation update...");
-    // 1. Fetch all items
     db.query("SELECT * FROM menu", (err, items) => {
-        if (err) { console.error(err); process.exit(1); }
+        if (err) { 
+            console.error(err); 
+            if (callback) callback(err);
+            return;
+        }
 
         let completed = 0;
         if (items.length === 0) {
-            console.log("No items to update.");
-            process.exit();
+            if (callback) callback(null);
+            return;
         }
 
         items.forEach(item => {
-            // Force a translation if not found in dictionary, to prove it works
             const name_hi = translate(item.name, 'hi') || `${item.name} (HI)`;
             const name_mr = translate(item.name, 'mr') || `${item.name} (MR)`;
-
-            const desc_hi = item.description ? (item.description + " (Hindi)") : null;
-            const desc_mr = item.description ? (item.description + " (Marathi)") : null;
-
             const cat_hi = translate(item.category, 'hi') || `${item.category} (HI)`;
             const cat_mr = translate(item.category, 'mr') || `${item.category} (MR)`;
-
             const sub_hi = translate(item.sub_category, 'hi') || `${item.sub_category} (HI)`;
             const sub_mr = translate(item.sub_category, 'mr') || `${item.sub_category} (MR)`;
 
-            const sql = `
-                UPDATE menu SET 
+            const sql = `UPDATE menu SET 
                 name_hi = ?, name_mr = ?, 
-                description_hi = ?, description_mr = ?,
                 category_hi = ?, category_mr = ?,
                 sub_category_hi = ?, sub_category_mr = ?
-                WHERE id = ?
-            `;
+                WHERE id = ?`;
 
-            db.query(sql, [name_hi, name_mr, desc_hi, desc_mr, cat_hi, cat_mr, sub_hi, sub_mr, item.id], (err) => {
-                if (err) console.error(err);
+            db.query(sql, [name_hi, name_mr, cat_hi, cat_mr, sub_hi, sub_mr, item.id], (err) => {
                 completed++;
                 if (completed === items.length) {
-                    console.log("✅ Translation updates complete (Force Mode).");
-                    process.exit();
+                    console.log("✅ Translation updates complete.");
+                    if (callback) callback(null);
                 }
             });
         });
     });
 };
 
-updateTranslations();
+if (require.main === module) {
+    exports.updateTranslations();
+}
+

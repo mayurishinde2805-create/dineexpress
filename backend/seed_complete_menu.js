@@ -1,6 +1,8 @@
 const db = require('./config/db');
 
-const menuItems = [
+exports.seedMenu = (callback) => {
+    console.log("Seeding Menu...");
+    const menuData = [
     // ========================================
     // 🥗 STARTERS
     // ========================================
@@ -188,15 +190,27 @@ const seed = async () => {
             i.image_url || null
         ]);
 
-        db.query(sql, [values], (err, result) => {
+        db.query(sql, [values], (err) => {
             if (err) {
-                console.error("Error seeding menu:", err);
+                console.error(err);
+                if (callback) callback(err);
             } else {
-                console.log(`✅ Complete Menu Seeded Successfully: ${result.affectedRows} items added.`);
+                console.log("✅ Main Menu Seed Complete.");
+                if (callback) callback(null);
             }
-            process.exit();
         });
     });
 };
 
-seed();
+// Auto-run if called directly
+if (require.main === module) {
+    exports.seedMenu((err) => {
+        if (err) {
+            console.error("Seeding failed:", err);
+            process.exit(1);
+        } else {
+            console.log("Seeding process finished successfully.");
+            process.exit(0);
+        }
+    });
+}
