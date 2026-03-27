@@ -91,15 +91,18 @@ exports.deleteMenuItem = (req, res) => {
 
 exports.debugRaw = (req, res) => {
   const db = require('../config/db');
-  db.query("SELECT * FROM menu LIMIT 5", (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    db.query("SHOW TABLES", (err2, tables) => {
-      res.json({ 
-        env_db_name: process.env.DB_NAME || "Not Set", 
-        tables: tables, 
-        sample_items: result,
-        count: result.length
+  db.query("SELECT COUNT(*) as total FROM menu", (errCount, countRes) => {
+    db.query("SELECT * FROM menu LIMIT 5", (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        db.query("SHOW TABLES", (err2, tables) => {
+          res.json({ 
+            env_db_name: process.env.DB_NAME || "Not Set", 
+            tables: tables, 
+            sample_items: result,
+            count: result.length,
+            total_items: countRes && countRes[0] ? countRes[0].total : 0
+          });
+        });
       });
-    });
   });
 };
