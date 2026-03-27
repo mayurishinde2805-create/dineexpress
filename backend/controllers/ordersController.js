@@ -213,6 +213,7 @@ exports.getOrders = (req, res) => {
         GROUP BY o.id
         ORDER BY o.created_at DESC
     `;
+
     db.query(sql, (err, results) => {
         if (err) return res.status(500).send(err);
         const parsed = results.map(row => ({

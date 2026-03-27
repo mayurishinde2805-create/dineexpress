@@ -7,9 +7,10 @@ const { adminAuth } = require('../middleware/authMiddleware');
 router.get('/all', getMenu);
 router.get('/debug-raw', debugRaw);
 
-// Admin-protected routes
-router.post('/add', adminAuth, addMenuItem);
-router.post('/update', adminAuth, updateMenuItem);
-router.post('/delete', adminAuth, deleteMenuItem);
+// Admin-protected routes (RESTful)
+router.post('/', adminAuth, addMenuItem);  // Add
+router.put('/:id', adminAuth, updateMenuItem); // Update
+router.delete('/:id', adminAuth, deleteMenuItem); // Delete
+
 
 module.exports = router;

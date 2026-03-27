@@ -33,7 +33,7 @@ exports.getMenu = (req, res) => {
       sub_category AS sub_category_en,
       ${subCatDisplayCol} AS sub_category,
       ${variantsCol} AS variants 
-      FROM menu_items`;
+      FROM menu`;
   
   let params = [];
   if (category && category !== "All") {
@@ -52,7 +52,7 @@ exports.getMenu = (req, res) => {
 
 exports.addMenuItem = (req, res) => {
     const { name, description, price, category, sub_category, image_url, variants, type, diet, is_available } = req.body;
-    const sql = `INSERT INTO menu_items (name, description, price, category, sub_category, image_url, variants, type, diet, is_available) 
+    const sql = `INSERT INTO menu (name, description, price, category, sub_category, image_url, variants, type, diet, is_available) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     db.query(sql, [name, description, price, category, sub_category, image_url, JSON.stringify(variants || []), type, diet || 'veg', is_available !== false ? 1 : 0], (err, result) => {
         if (err) return res.status(500).send(err);
@@ -64,7 +64,7 @@ exports.addMenuItem = (req, res) => {
 exports.updateMenuItem = (req, res) => {
     const id = req.params.id || req.body.id;
     const { name, description, price, category, sub_category, image_url, variants, type, diet, is_available } = req.body;
-    const sql = `UPDATE menu_items SET name=?, description=?, price=?, category=?, sub_category=?, image_url=?, variants=?, type=?, diet=?, is_available=? 
+    const sql = `UPDATE menu SET name=?, description=?, price=?, category=?, sub_category=?, image_url=?, variants=?, type=?, diet=?, is_available=? 
                  WHERE id=?`;
     db.query(sql, [name, description, price, category, sub_category, image_url, JSON.stringify(variants || []), type, diet || 'veg', is_available !== false ? 1 : 0, id], (err, result) => {
         if (err) return res.status(500).send(err);
@@ -75,7 +75,7 @@ exports.updateMenuItem = (req, res) => {
 
 exports.deleteMenuItem = (req, res) => {
     const id = req.params.id || req.body.id;
-    const sql = "DELETE FROM menu_items WHERE id=?";
+    const sql = "DELETE FROM menu WHERE id=?";
     db.query(sql, [id], (err, result) => {
         if (err) return res.status(500).send(err);
         if (req.io) req.io.emit('menuUpdated');
@@ -85,7 +85,7 @@ exports.deleteMenuItem = (req, res) => {
 
 exports.debugRaw = (req, res) => {
   const db = require('../config/db');
-  db.query("SELECT * FROM menu_items LIMIT 5", (err, result) => {
+  db.query("SELECT * FROM menu LIMIT 5", (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     db.query("SHOW TABLES", (err2, tables) => {
       res.json({ 
