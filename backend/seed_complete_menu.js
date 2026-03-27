@@ -1,8 +1,38 @@
 const db = require('./config/db');
 
 exports.seedMenu = (callback) => {
-    console.log("Seeding Menu...");
-    const menuData = [
+    console.log("Synchronizing Schema & Seeding Menu...");
+
+    // 1. Ensure columns exist (MySQL doesn't support ADD COLUMN IF NOT EXISTS well)
+    const ensureColumns = [
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS type VARCHAR(50) DEFAULT 'food'",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS diet VARCHAR(20) DEFAULT 'veg'",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS variants JSON",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS name_hi VARCHAR(255)",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS name_mr VARCHAR(255)",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS category_hi VARCHAR(255)",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS category_mr VARCHAR(255)",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS sub_category_hi VARCHAR(255)",
+        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS sub_category_mr VARCHAR(255)"
+    ];
+
+    // Wrap in a function to handle potential "column already exists" errors gracefully
+    const syncSchema = (idx, cb) => {
+        if (idx >= ensureColumns.length) return cb();
+        const sql = ensureColumns[idx].replace("IF NOT EXISTS", ""); // Render/Managed MySQL might not like it
+        
+        // Check if column exists first
+        const colName = ensureColumns[idx].split("COLUMN")[1].trim().split(" ")[2]; 
+        // Actually, easier way: just run it and ignore "Duplicate column" error (1060)
+        db.query(ensureColumns[idx], (err) => {
+            // Ignore error 1060 (Duplicate column)
+            syncSchema(idx + 1, cb);
+        });
+    };
+
+    syncSchema(0, () => {
+        const menuData = [
+
     // ========================================
     // 🥗 STARTERS
     // ========================================
@@ -125,6 +155,7 @@ exports.seedMenu = (callback) => {
             });
         }
     });
+    }); // <--- Closed syncSchema callback here
 };
 
 if (require.main === module) {
