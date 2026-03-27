@@ -19,16 +19,14 @@ exports.seedMenu = (callback) => {
     // Wrap in a function to handle potential "column already exists" errors gracefully
     const syncSchema = (idx, cb) => {
         if (idx >= ensureColumns.length) return cb();
-        const sql = ensureColumns[idx].replace("IF NOT EXISTS", ""); // Render/Managed MySQL might not like it
+        const sql = ensureColumns[idx].replace("IF NOT EXISTS", ""); 
         
-        // Check if column exists first
-        const colName = ensureColumns[idx].split("COLUMN")[1].trim().split(" ")[2]; 
-        // Actually, easier way: just run it and ignore "Duplicate column" error (1060)
-        db.query(ensureColumns[idx], (err) => {
-            // Ignore error 1060 (Duplicate column)
+        db.query(sql, (err) => {
+            // Ignore error 1060 (Duplicate column) or 1061 (Duplicate key)
             syncSchema(idx + 1, cb);
         });
     };
+
 
     syncSchema(0, () => {
         const menuData = [
