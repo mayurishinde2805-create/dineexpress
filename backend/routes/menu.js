@@ -7,29 +7,36 @@ const { adminAuth } = require('../middleware/authMiddleware');
 router.get('/all', getMenu);
 router.get('/debug-raw', debugRaw);
 router.get('/reseed-prod-emergency', (req, res) => {
-    const secret = req.query.secret;
-    if (secret !== 'dine_seed_2026') return res.status(401).send("Unauthorized");
-    
-    const { seedMenu } = require('../seed_complete_menu');
-    const { updateTranslations } = require('../seed_multilang');
-    const { diversifyPrices } = require('../patch_prices');
-
-    console.log("Starting Emergency Native Reseed...");
-
-    seedMenu((err1) => {
-        if (err1) return res.status(500).json({ error: "Step 1 (Menu Seed) Failed", details: err1.message || err1 });
+    try {
+        const secret = req.query.secret;
+        if (secret !== 'dine_seed_2026') return res.status(401).send("Unauthorized");
         
-        updateTranslations((err2) => {
-            if (err2) return res.status(500).json({ error: "Step 2 (Translation) Failed", details: err2.message || err2 });
+        console.log("Loading modules for emergency reseed...");
+        const { seedMenu } = require('../seed_complete_menu');
+        const { updateTranslations } = require('../seed_multilang');
+        const { diversifyPrices } = require('../patch_prices');
+
+        console.log("Starting Emergency Native Reseed...");
+
+        seedMenu((err1) => {
+            if (err1) return res.status(500).json({ error: "Step 1 (Menu Seed) Failed", details: err1.message || err1 });
             
-            diversifyPrices((err3) => {
-                if (err3) return res.status(500).json({ error: "Step 3 (Price Patch) Failed", details: err3.message || err3 });
+            updateTranslations((err2) => {
+                if (err2) return res.status(500).json({ error: "Step 2 (Translation) Failed", details: err2.message || err2 });
                 
-                res.json({ message: "Production Database Native Reseed Success! 🥘🚀" });
+                diversifyPrices((err3) => {
+                    if (err3) return res.status(500).json({ error: "Step 3 (Price Patch) Failed", details: err3.message || err3 });
+                    
+                    res.json({ message: "Production Database Native Reseed Success! 🥘🚀" });
+                });
             });
         });
-    });
+    } catch (err) {
+        console.error("Emergency Reseed Route Error:", err);
+        res.status(500).json({ error: "Route Execution Crash", details: err.message, stack: err.stack });
+    }
 });
+
 
 
 
