@@ -171,42 +171,6 @@ exports.seedMenu = (callback) => {
 ];
 
 const seed = async () => {
-    db.query("DELETE FROM menu", (err) => {
-        if (err) {
-            console.error("Error clearing menu:", err);
-            process.exit(1);
-        }
-
-        const sql = "INSERT INTO menu (name, category, sub_category, type, price, diet, description, variants, image_url) VALUES ?";
-        const values = menuItems.map(i => [
-            i.name,
-            i.category,
-            i.sub_category,
-            i.type || null,
-            i.price,
-            i.diet,
-            i.description,
-            i.variants ? JSON.stringify(i.variants) : null,
-            i.image_url || null
-        ]);
-
-        db.query(sql, [values], (err) => {
-            if (err) {
-                console.error(err);
-                if (callback) callback(err);
-            } else {
-                console.log("✅ Main Menu Seed Complete.");
-                if (callback) callback(null);
-            }
-        });
-    });
-};
-
-// Auto-run if called directly
-if (require.main === module) {
-    exports.seedMenu((err) => {
-        if (err) {
-            console.error("Seeding failed:", err);
             process.exit(1);
         } else {
             console.log("Seeding process finished successfully.");

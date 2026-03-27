@@ -17,19 +17,20 @@ router.get('/reseed-prod-emergency', (req, res) => {
     console.log("Starting Emergency Native Reseed...");
 
     seedMenu((err1) => {
-        if (err1) return res.status(500).json({ error: "Step 1 Failed", details: err1.message });
+        if (err1) return res.status(500).json({ error: "Step 1 (Menu Seed) Failed", details: err1.message || err1 });
         
         updateTranslations((err2) => {
-            if (err2) return res.status(500).json({ error: "Step 2 Failed", details: err2.message });
+            if (err2) return res.status(500).json({ error: "Step 2 (Translation) Failed", details: err2.message || err2 });
             
             diversifyPrices((err3) => {
-                if (err3) return res.status(500).json({ error: "Step 3 Failed", details: err3.message });
+                if (err3) return res.status(500).json({ error: "Step 3 (Price Patch) Failed", details: err3.message || err3 });
                 
                 res.json({ message: "Production Database Native Reseed Success! 🥘🚀" });
             });
         });
     });
 });
+
 
 
 // Admin-protected routes (RESTful)
