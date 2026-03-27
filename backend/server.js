@@ -61,6 +61,7 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 4000;
+console.log(`Server started at: ${new Date().toISOString()} (Phase 91 Sync)`);
 server.listen(PORT, () => {
   console.log(`🚀 DineExpress Server on port ${PORT}`);
 });
