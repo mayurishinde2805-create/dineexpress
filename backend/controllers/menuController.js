@@ -113,7 +113,14 @@ exports.debugFiles = (req, res) => {
   const root = path.join(__dirname, '..');
   try {
       const files = fs.readdirSync(root);
-      res.json({ root_files: files, dirname: __dirname });
+      const required = ['seed_complete_menu.js', 'seed_multilang.js', 'patch_prices.js', 'setup_qr_tables.js'];
+      const status = {};
+      required.forEach(f => status[f] = files.includes(f));
+      res.json({ 
+          found: status,
+          root_files_count: files.length,
+          dirname: __dirname 
+      });
   } catch (err) {
       res.status(500).json({ error: err.message });
   }
