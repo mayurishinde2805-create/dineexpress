@@ -17,6 +17,14 @@ const getApiUrl = () => {
     }
     
     // Default Production / Dev Fallback
+    const host = window.location.hostname;
+    if (host.includes("onrender.com")) {
+        // If frontend is dineexpress-frontend-xxxx.onrender.com, backend is dineexpress-backend-xxxx.onrender.com
+        const base = host.split("-frontend")[0] || "dineexpress";
+        const suffix = host.split("-frontend")[1] || "";
+        return `https://${base}-backend${suffix}`;
+    }
+    
     return "https://dineexpress-backend.onrender.com";
 
 };

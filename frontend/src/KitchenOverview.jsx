@@ -4,34 +4,28 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import "./kitchenDashboard.css";
 
-const socket = io(API_BASE_URL);
+const socket = io(API_BASE_URL, { 
+    transports: ['websocket'],
+    reconnection: true
+});
 
 export default function KitchenOverview() {
     const [orders, setOrders] = useState([]);
     const [waiterAlerts, setWaiterAlerts] = useState([]);
-    const [activeTab, setActiveTab] = useState("orders"); // "orders" or "alerts"
+    const [activeTab, setActiveTab] = useState("orders");
 
     useEffect(() => {
         fetchActiveOrders();
         fetchWaiterRequests();
 
-        socket.on("newOrder", () => {
-            fetchActiveOrders();
-        });
-
-        socket.on("statusUpdated", () => {
-            fetchActiveOrders();
-        });
-
-        socket.on("orderCancelled", () => {
-            fetchActiveOrders();
-        });
-
-        socket.on("callWaiter", (data) => {
-            fetchWaiterRequests();
-        });
+        socket.on("connect", () => console.log("🍳 Kitchen Connected to Backend"));
+        socket.on("newOrder", () => fetchActiveOrders());
+        socket.on("statusUpdated", () => fetchActiveOrders());
+        socket.on("orderCancelled", () => fetchActiveOrders());
+        socket.on("callWaiter", () => fetchWaiterRequests());
 
         return () => {
+            socket.off("connect");
             socket.off("newOrder");
             socket.off("statusUpdated");
             socket.off("orderCancelled");
@@ -42,37 +36,42 @@ export default function KitchenOverview() {
     const fetchActiveOrders = async () => {
         try {
             const res = await axios.get(API_BASE_URL + "/api/orders/kitchen");
-            const activeOnly = res.data.filter(o => (o.status || "").toLowerCase() !== "served");
+            const data = Array.isArray(res.data) ? res.data : [];
+            const activeOnly = data.filter(o => (o.status || "").toLowerCase() !== "served");
             setOrders(activeOnly);
         } catch (err) {
-            console.error(err);
+            console.error("Fetch Orders Error:", err);
         }
     };
 
     const fetchWaiterRequests = async () => {
         try {
             const res = await axios.get(API_BASE_URL + "/api/waiter-requests");
-            setWaiterAlerts(res.data);
+            setWaiterAlerts(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
-            console.error("Error fetching waiter requests:", err);
+            console.error("Waiter Request Error:", err);
         }
     };
 
     const updateStatus = async (orderId, newStatus) => {
         try {
+            // Optimistic update
+            setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+            
             await axios.put(`${API_BASE_URL}/api/orders/${orderId}/status`, {
                 status: newStatus,
             });
             fetchActiveOrders();
         } catch (err) {
-            console.error(err);
+            console.error("Status Update Failed:", err);
+            alert("Failed to update status.");
+            fetchActiveOrders();
         }
     };
 
     const resolveAlert = async (id) => {
         try {
             await axios.put(`${API_BASE_URL}/api/waiter-requests/${id}/resolve`);
-            // Optimistic update
             setWaiterAlerts(prev => prev.filter(alert => alert.id !== id));
         } catch (err) {
             console.error("Error resolving alert:", err);
@@ -83,7 +82,6 @@ export default function KitchenOverview() {
         <div className="kitchen-overview-content">
             <h1 className="kitchen-title">Kitchen Dashboard</h1>
 
-            {/* Tab Navigation */}
             <div className="kitchen-tabs">
                 <button
                     className={`k-tab ${activeTab === 'orders' ? 'active' : ''}`}
@@ -99,7 +97,6 @@ export default function KitchenOverview() {
                 </button>
             </div>
 
-            {/* Tab Content */}
             {activeTab === 'orders' && (
                 <div className="orders-section">
                     <div className="kitchen-stats-grid" style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
