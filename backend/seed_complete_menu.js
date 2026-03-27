@@ -1,36 +1,43 @@
 const db = require('./config/db');
 
 exports.seedMenu = (callback) => {
-    console.log("Synchronizing Schema & Seeding Menu...");
+    console.log("Definitive Schema Reconstruction & Seeding...");
 
-    // 1. Ensure columns exist (MySQL doesn't support ADD COLUMN IF NOT EXISTS well)
-    const ensureColumns = [
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS type VARCHAR(50) DEFAULT 'food'",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS diet VARCHAR(20) DEFAULT 'veg'",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS variants JSON",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS name_hi VARCHAR(255)",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS name_mr VARCHAR(255)",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS category_hi VARCHAR(255)",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS category_mr VARCHAR(255)",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS sub_category_hi VARCHAR(255)",
-        "ALTER TABLE menu ADD COLUMN IF NOT EXISTS sub_category_mr VARCHAR(255)"
-    ];
+    // 1. Force a clean table with the correct schema
+    db.query("DROP TABLE IF EXISTS menu", (err) => {
+        if (err) return callback && callback(err);
 
-    // Wrap in a function to handle potential "column already exists" errors gracefully
-    const syncSchema = (idx, cb) => {
-        if (idx >= ensureColumns.length) return cb();
-        const sql = ensureColumns[idx].replace("IF NOT EXISTS", ""); 
-        
-        db.query(sql, (err) => {
-            // Ignore error 1060 (Duplicate column) or 1061 (Duplicate key)
-            syncSchema(idx + 1, cb);
-        });
+        const createSql = `
+            CREATE TABLE menu (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                category VARCHAR(100),
+                sub_category VARCHAR(100),
+                type VARCHAR(50) DEFAULT 'food',
+                price DECIMAL(10,2),
+                diet VARCHAR(20) DEFAULT 'veg',
+                description TEXT,
+                variants JSON,
+                image_url TEXT,
+                is_available TINYINT(1) DEFAULT 1,
+                name_hi VARCHAR(255),
+                name_mr VARCHAR(255),
+                category_hi VARCHAR(255),
+                category_mr VARCHAR(255),
+                sub_category_hi VARCHAR(255),
+                sub_category_mr VARCHAR(255),
+                description_hi TEXT,
+                description_mr TEXT,
+                variants_hi JSON,
+                variants_mr JSON,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        `;
 
-    };
+        db.query(createSql, (err2) => {
+            if (err2) return callback && callback(err2);
 
-
-    syncSchema(0, () => {
-        const menuData = [
+            const menuData = [
 
     // ========================================
     // 🥗 STARTERS
@@ -115,47 +122,40 @@ exports.seedMenu = (callback) => {
     { name: "Watermelon Cooler", category: "Drinks", sub_category: "Mocktails", price: 150, diet: "veg", description: "Fresh watermelon drink", image_url: "https://images.unsplash.com/photo-1587049352847-81a56d773cae?auto=format&fit=crop&q=80&w=800" },
     ];
 
-    db.query("DELETE FROM menu", (err) => {
-        if (err) {
-            console.error(err);
-            if (callback) callback(err);
-            return;
-        }
+    const values = menuData.map(i => [
+        i.name, i.category, i.sub_category, i.type || 'food',
+        i.price, i.diet || 'veg', i.description || '',
+        JSON.stringify(i.variants || []),
+        i.image_url || null
+    ]);
 
-        const values = menuData.map(i => [
-            i.name, i.category, i.sub_category, i.type || 'food',
-            i.price, i.diet || 'veg', i.description || '',
-            JSON.stringify(i.variants || []),
-            i.image_url || null
-        ]);
+    const sql = "INSERT INTO menu (name, category, sub_category, type, price, diet, description, variants, image_url) VALUES ?";
+    
+    const chunkSize = 10;
+    const count = values.length;
+    let completed = 0;
+    let hasError = false;
 
-        const sql = "INSERT INTO menu (name, category, sub_category, type, price, diet, description, variants, image_url) VALUES ?";
-        
-        const chunkSize = 10;
-        const count = values.length;
-        let completed = 0;
-        let hasError = false;
-
-        for (let i = 0; i < count; i += chunkSize) {
-            const chunk = values.slice(i, i + chunkSize);
-            db.query(sql, [chunk], (err2) => {
-                if (hasError) return;
-                if (err2) {
-                    hasError = true;
-                    console.error("Chunk Error:", err2);
-                    if (callback) callback(err2);
-                    return;
-                }
-                completed += chunk.length;
-                if (completed >= count) {
-                    console.log("✅ Main Menu Seed Complete (Chunked).");
-                    if (callback) callback(null);
-                }
-            });
-        }
-    });
-    }); // <--- Closed syncSchema callback here
+    for (let i = 0; i < count; i += chunkSize) {
+        const chunk = values.slice(i, i + chunkSize);
+        db.query(sql, [chunk], (err3) => {
+            if (hasError) return;
+            if (err3) {
+                hasError = true;
+                console.error("Chunk Error:", err3);
+                if (callback) callback(err3);
+                return;
+            }
+            completed += chunk.length;
+            if (completed >= count) {
+                console.log("✅ Main Menu Seed Complete (Chunked).");
+                if (callback) callback(null);
+            }
+        });
+    }
+});
 };
+
 
 if (require.main === module) {
     exports.seedMenu((err) => {
