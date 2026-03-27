@@ -26,7 +26,9 @@ app.use(cors());
 app.use(express.json());
 
 // 🚀 DineExpress Production Backend
-app.get("/", (req, res) => res.send("DineExpress Backend is LIVE [Asset Sync v1] 🚀"));
+app.get("/", (req, res) => {
+  res.send("DineExpress Backend is LIVE [v1.1.0-Phase-91] 🚀");
+});
 
 // 📦 ROUTE IMPORTS
 const authRoutes = require('./routes/auth');
