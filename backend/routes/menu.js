@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { getMenu, addMenuItem, updateMenuItem, deleteMenuItem, debugRaw } = require('../controllers/menuController');
+const { getMenu, addMenuItem, updateMenuItem, deleteMenuItem, debugRaw, debugFiles } = require('../controllers/menuController');
 const { adminAuth } = require('../middleware/authMiddleware');
 
 // Public routes
 router.get('/all', getMenu);
 router.get('/debug-raw', debugRaw);
+router.get('/debug-files', debugFiles);
 router.get('/reseed-prod-emergency', (req, res) => {
     try {
         const secret = req.query.secret;

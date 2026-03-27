@@ -106,3 +106,15 @@ exports.debugRaw = (req, res) => {
       });
   });
 };
+
+exports.debugFiles = (req, res) => {
+  const fs = require('fs');
+  const path = require('path');
+  const root = path.join(__dirname, '..');
+  try {
+      const files = fs.readdirSync(root);
+      res.json({ root_files: files, dirname: __dirname });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
