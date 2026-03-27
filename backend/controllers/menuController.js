@@ -63,15 +63,21 @@ exports.addMenuItem = (req, res) => {
 
 exports.updateMenuItem = (req, res) => {
     const id = req.params.id || req.body.id;
-    const { name, description, price, category, sub_category, image_url, variants, type, diet, is_available } = req.body;
+    const { name, description, price, category, category_en, sub_category, sub_category_en, image_url, variants, type, diet, is_available } = req.body;
+    
+    // Prioritize English Original for the raw columns (prevents corruption from translated Admin UI)
+    const finalCat = category_en || category;
+    const finalSub = sub_category_en || sub_category;
+
     const sql = `UPDATE menu SET name=?, description=?, price=?, category=?, sub_category=?, image_url=?, variants=?, type=?, diet=?, is_available=? 
                  WHERE id=?`;
-    db.query(sql, [name, description, price, category, sub_category, image_url, JSON.stringify(variants || []), type, diet || 'veg', is_available !== false ? 1 : 0, id], (err, result) => {
+    db.query(sql, [name, description, price, finalCat, finalSub, image_url, JSON.stringify(variants || []), type, diet || 'veg', is_available !== false ? 1 : 0, id], (err, result) => {
         if (err) return res.status(500).send(err);
         if (req.io) req.io.emit('menuUpdated');
         res.json({ message: "Menu Item Updated" });
     });
 };
+
 
 exports.deleteMenuItem = (req, res) => {
     const id = req.params.id || req.body.id;

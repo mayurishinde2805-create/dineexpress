@@ -13,7 +13,9 @@ export default function AdminMenuManagement() {
     const [formData, setFormData] = useState({
         name: "",
         category: "",
+        category_en: "",
         sub_category: "",
+        sub_category_en: "",
         type: "",
         price: "",
         diet: "veg",
@@ -21,6 +23,7 @@ export default function AdminMenuManagement() {
         image_url: "",
         is_available: true,
     });
+
 
     useEffect(() => {
         fetchItems();
@@ -75,8 +78,10 @@ export default function AdminMenuManagement() {
         setEditingItem(item);
         setFormData({
             name: item.name,
-            category: item.category,
-            sub_category: item.sub_category,
+            category: item.category_en || item.category,
+            category_en: item.category_en || item.category,
+            sub_category: item.sub_category_en || item.sub_category,
+            sub_category_en: item.sub_category_en || item.sub_category,
             type: item.type || "",
             price: item.price,
             diet: item.diet,
@@ -86,6 +91,7 @@ export default function AdminMenuManagement() {
         });
         setShowModal(true);
     };
+
 
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
